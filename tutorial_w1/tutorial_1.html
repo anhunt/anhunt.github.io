@@ -32,8 +32,8 @@
             Awesome Science faculty<br>
             University of Awesome<br>
             Bobtown, CA 99999 USA<br>
-            <strong>Tel:</strong>123-456-7890<br>
-            <strong>Email:</strong>no_reply@example.com
+            <strong>Tel:</strong> <a href="tel:+11234567890" class="letter-link">123-456-7890</a><br>
+            <strong>Email:</strong> <a href="mailto:no_reply@example.com" class="letter-link">no_reply@example.com</a>
           </p>
         </address>
         <p class="letter-date">20 January 2016</p>
@@ -51,7 +51,7 @@
       <p class="letter-paragraph">
         Thank you for your recent application to join us at the University of
         Awesome's science faculty to study as part of your
-        <abbr>PhD</abbr>(Doctor of Philosophy) next year. I will answer your
+        <abbr class="abbreviation" title="Doctor of Philosophy">PhD</abbr> next year. I will answer your
         questions one by one, in the following sections.
       </p>
       <div class="content-section">
@@ -59,12 +59,12 @@
         <p class="letter-paragraph">
           We are happy to accommodate you starting your study with us at any
           time, however it would suit us better if you could start at the
-          beginning of a semester; the start dates for each one are as follows:
+          <em class="emphasis">beginning</em>of a semester; the start dates for each one are as follows:
         </p>
         <ul class="semester-dates">
-          <li><strong>First semester: </strong>9 September 2016</li>
-          <li><strong>Second semester: </strong>15 January 2017</li>
-          <li><strong>Third semester: </strong>2 May 2017</li>
+          <li><strong>First semester: </strong><time datetime="2016-09-09">9 September 2016</time></li>
+          <li><strong>Second semester: </strong><time datetime="2017-01-15">15 January 2017</time></li>
+          <li><strong>Third semester: </strong><time datetime="2017-05-02">2 May 2017</time></li>
         </ul>
         <p class="letter-paragraph">
           Please let me know if this is ok, and if so which start date you would
@@ -83,12 +83,12 @@
           facility — as long as the subjects fall somewhere in the realm of
           science and technology. You seem like an intelligent, dedicated
           researcher, and just the kind of person we'd like to have on our team.
-          Saying that, of the ideas you submitted we were most intrigued by are
+          Saying that, of the ideas you submitted we were <em class="emphasis">most</em>intrigued by are
           as follows, in order of priority:
         </p>
         <ol class="priority-list">
           <li>
-            Turning H2O into wine, and the health benefits of Resveratrol
+            Turning <abbr class="abbreviation" title="water">H<sub>2</sub>O</abbr> into wine, and the health benefits of Resveratrol
             (C<sub>14</sub>H<sub>12</sub>O<sub>3</sub>.)
           </li>
           <li>
@@ -98,8 +98,8 @@
             3 × 10<sup>4</sup>.)
           </li>
           <li>
-            <abbr class="abbreviation">HTML</abbr>, Hypertext Markup Language,
-            and <abbr class="abbreviation">CSS</abbr>, Cascading Style Sheets,
+            <abbr class="abbreviation" title="hypertext markup language">HTML</abbr>
+            and <abbr class="abbreviation" title="cascading style sheets">CSS</abbr>
             constructs for representing musical scores.
           </li>
         </ol>
@@ -121,7 +121,7 @@
           <dt class="dance-term">Polynesian chicken dance</dt>
           <dd class="dance-definition">
             A little known but <em class="emphasis">very</em> influential dance
-            dating back as far as 300 <abbr class="abbreviation">BCE</abbr>, a
+            dating back as far as 300 <abbr class="abbreviation" title="before common era">BCE</abbr>, a
             whole village would dance around in a circle like chickens, to
             encourage their livestock to be "fruitful".
           </dd>
@@ -132,7 +132,7 @@
             together in a circle on the floor, and shuffling their bodies around
             in imperceptibly tiny, very rapid movements. One of my fellow
             students used to say that he thought this dance inspired modern
-            styles such as Twerking.
+            styles such as <cite>Twerking</cite>.
           </dd>
           <dt class="dance-term">Arctic robot dance</dt>
           <dd class="dance-definition">
@@ -152,7 +152,7 @@
         <p class="closing-phrase">Yours sincerely,</p>
         <p class="signature">Dr Eleanor Gaye</p>
         <div class="university-motto">
-          <h3>University of Awesome motto:</h3>
+          <strong>University of Awesome motto:</strong>
           <p class="inline-quote">Be awesome to each other.</p>
           <p class="citation">
             -- The memoirs of Bill S Preston,
