@@ -9,7 +9,7 @@
    =========================================== */
 
 /* External font - add your choice from Google Fonts, Inter will not be graded */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap');
 
 :root {
   /* Spacing scale */
@@ -24,12 +24,13 @@
   --color-surface: hsl(0, 0%, 100%);
   --color-text: hsl(210, 10%, 20%);
   --color-text-muted: hsl(210, 10%, 50%);
-  --color-accent: hsl(220, 80%, 50%);
-  --color-border: hsla(210, 10%, 20%, 0.1);
+  --color-accent: hsl(0, 0%, 55%);
+  --color-link-accent:hsl(165, 99%, 70%);
+  --color-border: hsla(0, 0%, 38%, 0.3);
   
   /* Typography */
-  --font-body: 'Inter', system-ui, sans-serif;
-  --font-display: 'Inter', system-ui, sans-serif; /* Change this */
+  --font-body: 'Inconsolata', system-ui, sans-serif;
+  --font-display: 'Inconsolata', system-ui, sans-serif; /* Changed */
 }
 
 /* Reset */
@@ -49,18 +50,23 @@ body {
    TASK 1: PAGE GRID STRUCTURE
    
    Define your grid here. You need:
-   - grid-template-areas for the layout map
-   - grid-template-columns for column widths
-   - grid-template-rows for row heights
-   - min-height: 100vh to fill the viewport
-   - gap for spacing between regions
+   - grid-template-areas for the layout map -done
+   - grid-template-columns for column widths -done
+   - grid-template-rows for row heights -done
+   - min-height: 100vh to fill the viewport -done
+   - gap for spacing between regions -done
    =========================================== */
 
 .page-layout {
   display: grid;
-  /* YOUR CODE: grid-template-areas */
-  /* YOUR CODE: grid-template-columns */
-  /* YOUR CODE: grid-template-rows */
+  width: 100vw;
+  min-height: 100vw;
+  grid-template-areas:
+    "head"
+    "main"
+    "section"
+    "foot";
+  grid-template-rows: auto auto 1fr auto;
   min-height: 100vh;
   gap: var(--spacing-md);
 }
@@ -68,38 +74,44 @@ body {
 /* ===========================================
    TASK 2: ASSIGN GRID AREAS
    
-   Connect each section to its named area
+   Connect each section to its named area -done
    =========================================== */
 
 .site-header {
-  /* YOUR CODE: grid-area */
-  background: var(--color-surface);
+  grid-area: head;
+  background: var(--color-text);
+  color: var(--color-bg);
   padding: var(--spacing-md) var(--spacing-lg);
   border-bottom: 1px solid var(--color-border);
 }
 
 .hero-section {
-  /* YOUR CODE: grid-area */
-  padding: var(--spacing-xl);
+grid-area: main;
+background-color:ghostwhite;
+border-bottom: 1px solid var(--color-border);
+padding: var(--spacing-xl);
 }
 
 .list-section {
-  /* YOUR CODE: grid-area */
+  grid-area: section;
   padding: var(--spacing-lg);
 }
 
 .site-footer {
-  /* YOUR CODE: grid-area */
+  grid-area: foot;
   background: var(--color-text);
   color: var(--color-bg);
   padding: var(--spacing-lg);
   /* NOTE: Footer should not exceed main content width */
+  width: 100vw;
 }
 
 /* ===========================================
    TASK 3: FLEXBOX FOR COMPONENTS
    
    Use Flexbox to arrange items WITHIN grid regions
+
+   done
    =========================================== */
 
 .header-nav {
@@ -113,19 +125,106 @@ body {
   gap: var(--spacing-md);
   list-style: none;
   padding: 0;
+  color: var(--color-bg);
 }
 
 /* Make list items flow horizontally on large screens */
 .list-section {
   /* YOUR CODE: display flex, gap, wrap behavior */
+  display:flex;
+  gap: var(--spacing-lg);
+  flex-wrap: wrap;
+  flex-direction: row;
 }
 
 .list-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  width: 480px;
   background: var(--color-surface);
   padding: var(--spacing-lg);
-  border-radius: 0.5rem;
   border: 1px solid var(--color-border);
-  /* YOUR CODE: flex-basis or width for sizing */
+  border-radius: 0.8rem;
+}
+.main-content {
+  display:flex;
+  flex-direction: row;
+}
+.header-image {
+  display:block;
+}
+.header-description {
+  display:block;
+  padding: var(--spacing-sm);
+  margin: var(--spacing-xs)
+}
+.header-header {
+  display:flex;
+  flex-direction:row;
+  justify-content: space-between;
+}
+.header-text {
+  padding: var(--spacing-sm)
+}
+.header-title-date {
+  display:flex;
+  flex-direction:column;
+  padding:.5rem;
+}
+.author-user {
+  display:flex;
+  justify-content:flex-end;
+  flex-direction:row;
+  height:auto;
+  padding:.5rem;
+}
+.author-pfp {
+  display: block;
+}
+.author-name {
+  display: flex;
+  padding-left:0.5em;
+}
+.engagement-bar {
+  display:flex;
+  flex-direction:row;
+  justify-content: space-between;
+}
+.engagement-button {
+  display:flex;
+  flex-direction:row;
+  justify-content: flex-start;
+}
+.engagement-icon {
+  display:flex;
+  align-items:center;
+}
+.comment-section {
+  display:flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+.comment {
+  border-top: 1px solid var(--color-border);
+  display: block;
+  padding: 0.5em;
+}
+.comment-header {
+  display:flex;
+  flex-direction:row;
+  justify-content: space-between;
+}
+.comment-author {
+  display:flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+.comment-time {
+  display:flex;
+  justify-content: end;
+  font-size:0.8rem;
+  color: var(--color-accent);
 }
 
 /* ===========================================
@@ -134,20 +233,24 @@ body {
    Under 48rem:
    - Stack all grid regions vertically
    - List items should stack vertically too
+   <!-- done -->
    =========================================== */
 
 @media (max-width: 48rem) {
-  .page-layout {
-    /* YOUR CODE: redefine grid-template-areas */
-    /* YOUR CODE: single column layout */
+  .page-layout { 
+  grid-template-areas: 
+  "head"
+  "main"
+  "section"
+  "foot";
   }
   
   .list-section {
-    /* YOUR CODE: change flex-direction if needed */
+   flex-direction: column;
   }
   
   .list-item {
-    /* YOUR CODE: full width on mobile */
+  width:100%;
   }
 }
 
@@ -164,10 +267,9 @@ h1 {
 }
 
 a {
-  color: var(--color-accent);
   text-decoration: none;
 }
 
 a:hover {
-  text-decoration: underline;
+    text-decoration: underline wavy var(--color-link-accent);
 }
