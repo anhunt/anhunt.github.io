@@ -2,32 +2,26 @@
 /* These styles are very, very ugly. */
 /* Time to make them attractive, legible, and usable */
 /* External font - add your choice from Google Fonts, Inter will not be graded */
-@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap");
 
 :root {
-  /* Spacing scale */
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
   --spacing-md: 1rem;
   --spacing-lg: 1.5rem;
   --spacing-xl: 2rem;
-  
-  /* Colors - customize these */
   --color-bg: hwb(190 76% 0%);
   --color-surface: hsl(0, 0%, 100%);
   --color-text: hsl(192, 12%, 8%);
-  --color-text-muted: hsl(210, 10%, 50%);
-  --color-accent: hsl(315, 100%, 78%);
-  --color-link-accent:hsl(165, 99%, 70%);
   --color-border: hsla(0, 0%, 22%, 0.3);
-  
-  /* Typography */
-  --font-body: 'Inconsolata', system-ui, sans-serif;
-  --font-display: 'Inconsolata', system-ui, sans-serif; /* Changed */
+  --font-body: "Inconsolata", system-ui, sans-serif;
+  --font-display: "Inconsolata", system-ui, sans-serif;
 }
 
 /* Reset */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
 }
@@ -39,180 +33,187 @@ body {
   line-height: 1.6;
 }
 .recipe-container {
-    display: grid;
-    width: 100vw;
-    grid-template-areas:
+  display: grid;
+  width: 100vw;
+  grid-template-areas:
     "head head"
     "description description"
     "meta meta"
     "ingredients instructions"
     "ingredients instructions"
     "foot foot";
-    grid-template-columns: 1fr 2fr;
-    gap: var(--spacing-xs);
-    padding:4rem 12rem 4rem 12em;
+  grid-template-columns: 1fr 2fr;
+  gap: var(--spacing-xs);
+  padding: 4rem 12rem 4rem 12em;
 }
+
 .recipe-header {
-    grid-area: head;
-    display:flex;
-    justify-content: start;
-    align-items: center;
-    min-height: 20vh;
-    border: 0.4rem solid;
-    margin: 0.4rem;
-    padding: 2rem;
+  grid-area: head;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  min-height: 20vh;
+  border: 0.4rem solid;
+  margin: 0.4rem;
+  padding: 2rem;
 }
 
 .recipe-title {
-    font-size: 3.4rem;
-    margin-right:1rem;
+  font-size: 3.4rem;
+  margin-right: 1rem;
 }
 
 .recipe-meta {
-    grid-area:meta;
-    justify-content: space-evenly;
-    gap: var(--spacing-md);
-    display: flex;
-    margin: 0.2rem;
-    padding: 1rem;
+  grid-area: meta;
+  justify-content: space-evenly;
+  gap: var(--spacing-md);
+  display: flex;
+  margin: 0.2rem;
+  padding: 1rem;
 }
 .meta-item {
-    margin-bottom: var(--spacing-xs);
-    padding-left: 0.6rem;
-    border-left: 0.4rem solid black;
+  margin-bottom: var(--spacing-xs);
+  padding-left: 0.6rem;
+  border-left: 0.4rem solid black;
 }
 .recipe-description {
-    display:flex;
-    align-items: flex-start;
-    grid-area:description;
-    margin: 0.2rem;
-    padding: 1rem;
-    align-content: start;
-    font-size: 1.4rem;
+  display: flex;
+  align-items: flex-start;
+  grid-area: description;
+  margin: 0.2rem;
+  padding: 1rem;
+  align-content: start;
+  font-size: 1.4rem;
 }
 
 .ingredients-section {
-    grid-area:ingredients;
-    margin: 0.2rem;
-    padding: 1rem;
+  grid-area: ingredients;
+  margin: 0.2rem;
+  padding: 1rem;
 }
 
 .ingredients-list {
-    list-style: square;
+  list-style: square;
 }
 
 .ingredients-list li {
-    margin-bottom: var(--spacing-xs);
+  margin-bottom: var(--spacing-xs);
 }
 
 .instructions-section {
-    grid-area:instructions;
-    margin: 0.2rem;
-    padding: 1rem;
+  grid-area: instructions;
+  margin: 0.2rem;
+  padding: 1rem;
 }
 
 .instruction-step {
-    margin-bottom: var(--spacing-xs);
-
+  margin-bottom: var(--spacing-xs);
 }
 
 .recipe-footer {
-    grid-area:foot;
-    display:flex;
-    border: 0.4rem solid;
-    margin: 0.2rem;
-    padding: 1rem;
+  grid-area: foot;
+  display: flex;
+  border: 0.4rem solid;
+  margin: 0.2rem;
+  padding: 1rem;
 }
 
 .recipe-image {
-    width: 48px;
-    height: 48px;
+  width: 48px;
+  height: 48px;
 }
-.footer-tag{
-    font-size: 0.8rem;
-    border: 5px solid black;
-    background: black;
-    color: white;
-    padding: 0.2rem;
-    margin: 0.2rem;
-    border-radius: 1rem;
-    text-decoration: none;
 
+.footer-tag {
+  font-size: 0.8rem;
+  border: 5px solid black;
+  background: black;
+  color: white;
+  padding: 0.2rem;
+  margin: 0.2rem;
+  border-radius: 1rem;
+  text-decoration: none;
 }
+
 .footer-tags {
-    display: inline;
-    flex-direction: row;
-    align-content:space-around;
-    justify-content: start;
-
+  display: inline;
+  flex-direction: row;
+  align-content: space-around;
+  justify-content: start;
 }
 .footer-tags-title {
-    align-content: center;
-    font-weight: 800;
+  align-content: center;
+  font-weight: 800;
 }
+
 .tags-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--spacing-md)
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
 }
+
 .tags-list a {
-    display: inline-flex;
-    align-items: center;
-    font-size: 0.8rem;
-    border: 5px solid black;
-    background: black;
-    color: white;
-    padding: 0.2rem;
-    margin: 0.2rem;
-    text-decoration: none;
-    transition: opacity 0.3s ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.8rem;
+  border: 5px solid black;
+  background: black;
+  color: white;
+  padding: 0.2rem;
+  margin: 0.2rem;
+  text-decoration: none;
+  transition: opacity 0.3s ease-in-out;
 }
+
 .tags-list a:hover {
-    opacity: 0.4;
+  opacity: 0.4;
 }
+
 .recipe-icon {
-    width:48px;
-    height: 48px;
+  width: 48px;
+  height: 48px;
 }
 @media (max-width: 48rem) {
-  .recipe-container { 
-    grid-template-areas: 
-        "head"
-        "description"
-        "meta"
-        "ingredients"
-        "instructions"
-        "foot";
+  .recipe-container {
+    grid-template-areas:
+      "head"
+      "description"
+      "meta"
+      "ingredients"
+      "instructions"
+      "foot";
     grid-template-columns: 1fr;
     grid-template-rows: auto;
     width: 100vw;
     min-height: 100vw;
-    margin-top:0.4rem;
-    padding:0.4rem;
+    margin-top: 0.4rem;
+    padding: 0.4rem;
   }
+
   .recipe-description {
     font-size: 1.2rem;
   }
+
   .recipe-header {
-    display:flex;
+    display: flex;
     flex-direction: column;
     justify-content: start;
     align-items: start;
   }
+
   .recipe-meta {
     gap: var(--spacing-md);
     display: flex;
     flex-direction: column;
     margin: 0.2rem;
     padding: 1rem;
-}
-.meta-item {
+  }
+  .meta-item {
     margin-bottom: var(--spacing-xs);
     padding-left: 0.6rem;
     border-left: 0.4rem solid black;
-}
+  }
 
-.recipe-title {
+  .recipe-title {
     font-size: 2.6rem;
-}
+  }
 }
