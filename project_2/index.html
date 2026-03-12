@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Views - Framework Approach</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <body>
+    <div class="container">
+        <header>
+            <h1>One Dataset, Four Presentations</h1>
+            <p><strong>Assignment:</strong> The same restaurant data, displayed in four different ways. Each presentation emphasizes different aspects of the information and serves different user goals.</p>
+        </header>
+
+        <nav class="view-selector">
+            <button class="view-button active" id="btn-cards" data-view="cards">Card View</button>
+            <button class="view-button" id="btn-table" data-view="table">Table View</button>
+            <button class="view-button" id="btn-categories" data-view="categories">Category View</button>
+            <button class="view-button" id="btn-stats" data-view="stats">Stats View</button>
+        </nav>
+
+        <main class="display-container">
+            <div id="data-display">
+                <div class="loading">Loading restaurant data...</div>
+            </div>
+        </main>
+
+        <section class="asst-box">
+            <h3>Your Assignment:</h3>
+            <ol>
+                <li><strong>Choose your API:</strong> Pick from PG County Open Data, NASA, Art Institute, etc.</li>
+                <li><strong>Complete the four presentation functions:</strong> Card grid, data table, category groups, and statistics summary</li>
+                <li><strong>Make each view useful:</strong> What information does each presentation emphasize?</li>
+                <li><strong>Add your own styling:</strong> Make it visually appealing and easy to use</li>
+                <li><strong>Write a reflection:</strong> How does presentation change the meaning of your data?</li>
+            </ol>
+            
+            <h3>Why Four Presentations?</h3>
+            <ul>
+                <li><strong>Card View:</strong> Best for browsing and comparing individual items</li>
+                <li><strong>Table View:</strong> Perfect for scanning specific data points and sorting</li>
+                <li><strong>Category View:</strong> Emphasizes groupings and relationships</li>
+                <li><strong>Stats View:</strong> Highlights patterns and aggregate insights</li>
+            </ul>
+        </section>
+    </div>
+    <script type="module" src="./script.js" defer></script>
+</body>
+</html>
