@@ -1,0 +1,579 @@
+/* =====================================================
+   TUTORIAL 7: SAME DATA, DIFFERENT STORIES
+   Information architecture through multiple data presentations
+   ===================================================== */
+
+/* ROOT VARIABLES */
+:root {
+    --primary-color: #007cba;
+    --secondary-color: #28a745;
+    --warning-color: #ffc107;
+    --error-color: #dc3545;
+    --info-color: #17a2b8;
+    --background-color: #f8f9fa;
+    --card-background: #ffffff;
+    --text-color: #333;
+    --text-muted: #666;
+    --border-color: #ddd;
+    --shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
+    --shadow-hover: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.15);
+    --border-radius: 0.5rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    --spacing-xxl: 3rem;
+}
+
+/* BASE STYLES */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: system-ui, -apple-system, sans-serif;
+    margin: 0;
+    padding: var(--spacing-md);
+    background: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 75rem;
+    margin: 0 auto;
+}
+
+/* HEADER */
+header {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+    padding: var(--spacing-xxl) var(--spacing-xl);
+    background: linear-gradient(135deg, var(--primary-color), var(--info-color));
+    color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
+header h1 {
+    margin-bottom: var(--spacing-sm);
+    font-size: 2.5rem;
+    font-weight: 300;
+}
+
+header p {
+    font-size: 1.2rem;
+    margin: 0;
+    opacity: 0.9;
+}
+
+/* LOADING SECTION */
+.loading-section {
+    background: var(--card-background);
+    padding: var(--spacing-xl);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    margin-bottom: var(--spacing-lg);
+    border-left: 0.25rem solid var(--warning-color);
+}
+
+.loading-section h2 {
+    color: var(--warning-color);
+    margin-top: 0;
+}
+
+.status-display {
+    background: #fff3cd;
+    border: 2px solid var(--warning-color);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    text-align: center;
+}
+
+.status-display.loading {
+    background: #cce7ff;
+    border-color: var(--primary-color);
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+.status-display.success {
+    background: #d4edda;
+    border-color: var(--secondary-color);
+}
+
+.status-display.error {
+    background: #f8d7da;
+    border-color: var(--error-color);
+}
+
+.status-message {
+    margin: 0;
+    font-weight: bold;
+}
+
+.load-button {
+    background: var(--warning-color);
+    color: #212529;
+    border: none;
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: all 0.2s ease;
+    width: 100%;
+}
+
+.load-button:hover:not(:disabled) {
+    background: #e0a800;
+    transform: translateY(-1px);
+}
+
+.load-button:disabled {
+    background: #6c757d;
+    cursor: not-allowed;
+}
+
+.data-summary {
+    background: #e8f5e8;
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius);
+    text-align: center;
+    font-weight: bold;
+    color: #155724;
+    margin-top: var(--spacing-md);
+}
+
+/* VIEW CONTROLS */
+.view-controls {
+    background: var(--card-background);
+    padding: var(--spacing-xl);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    margin-bottom: var(--spacing-lg);
+}
+
+.view-controls h2 {
+    color: var(--primary-color);
+    margin-top: 0;
+}
+
+.view-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+}
+
+.view-button {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-lg);
+    background: white;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.view-button:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+.view-button.active {
+    border-color: var(--primary-color);
+    background: rgba(0, 124, 186, 0.05);
+}
+
+.view-icon {
+    font-size: 1.5rem;
+    min-width: 2rem;
+}
+
+.view-info strong {
+    display: block;
+    color: var(--text-color);
+    margin-bottom: 0.25rem;
+}
+
+.view-info small {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+}
+
+/* DISPLAY CONTAINER */
+.display-container {
+    background: var(--card-background);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    margin-bottom: var(--spacing-lg);
+}
+
+.view-panel {
+    display: none;
+    padding: var(--spacing-xl);
+}
+
+.view-panel.active {
+    display: block;
+}
+
+.view-header {
+    border-bottom: 2px solid #eee;
+    padding-bottom: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+}
+
+.view-header h3 {
+    margin: 0 0 var(--spacing-sm) 0;
+    color: var(--primary-color);
+    font-size: 1.5rem;
+}
+
+.view-header p {
+    margin: 0;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+/* CARD VIEW */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.restaurant-card {
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-lg);
+    transition: all 0.2s ease;
+}
+
+.restaurant-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+.restaurant-card.compliant {
+    border-left: 0.25rem solid var(--secondary-color);
+}
+
+.restaurant-card.non-compliant {
+    border-left: 0.25rem solid var(--error-color);
+}
+
+.card-name {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-sm);
+}
+
+.card-location {
+    color: var(--text-muted);
+    margin-bottom: var(--spacing-sm);
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.card-location::before {
+    content: "📍";
+}
+
+.card-status {
+    display: inline-block;
+    padding: 0.25rem var(--spacing-sm);
+    border-radius: 1rem;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.card-status.compliant {
+    background: #d4edda;
+    color: #155724;
+}
+
+.card-status.non-compliant {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.card-status.other {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.card-date {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin-top: var(--spacing-sm);
+}
+
+/* TABLE VIEW */
+.table-container {
+    overflow-x: auto;
+}
+
+.inspection-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.inspection-table th {
+    background: #f8f9fa;
+    padding: var(--spacing-md);
+    text-align: left;
+    border-bottom: 2px solid var(--border-color);
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.inspection-table td {
+    padding: var(--spacing-md);
+    border-bottom: 1px solid #eee;
+    vertical-align: top;
+}
+
+.inspection-table tr:hover {
+    background: #f8f9fa;
+}
+
+.table-restaurant-name {
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.table-status {
+    padding: 0.25rem var(--spacing-sm);
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.table-status.compliant {
+    background: #d4edda;
+    color: #155724;
+}
+
+.table-status.non-compliant {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.table-status.other {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.compliance-indicator {
+    text-align: center;
+    font-size: 0.875rem;
+}
+
+.compliance-indicator.pass {
+    color: var(--secondary-color);
+}
+
+.compliance-indicator.fail {
+    color: var(--error-color);
+}
+
+/* STATS VIEW */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+}
+
+.stat-card {
+    background: linear-gradient(135deg, var(--primary-color), #0056b3);
+    color: white;
+    padding: var(--spacing-xl);
+    border-radius: var(--border-radius);
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin: var(--spacing-sm) 0;
+    line-height: 1;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    margin: 0;
+}
+
+.city-breakdown {
+    background: #f8f9fa;
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius);
+}
+
+.city-breakdown h4 {
+    color: var(--primary-color);
+    margin-top: 0;
+    margin-bottom: var(--spacing-lg);
+}
+
+.city-stats {
+    display: grid;
+    gap: var(--spacing-md);
+}
+
+.city-stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-md);
+    background: white;
+    border-radius: var(--border-radius);
+    border-left: 0.25rem solid var(--info-color);
+}
+
+.city-name {
+    font-weight: bold;
+}
+
+.city-compliance {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+}
+
+/* TUTORIAL INSIGHTS */
+.tutorial-insights {
+    background: var(--card-background);
+    padding: var(--spacing-xl);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    border-left: 0.25rem solid var(--secondary-color);
+    margin-bottom: var(--spacing-lg);
+}
+
+.tutorial-insights h2 {
+    color: var(--secondary-color);
+    margin-top: 0;
+}
+
+.insights-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+}
+
+.insight-card {
+    background: #e8f5e8;
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius);
+    border-left: 0.25rem solid var(--secondary-color);
+}
+
+.insight-card h4 {
+    color: var(--secondary-color);
+    margin-top: 0;
+}
+
+.insight-card p {
+    margin-bottom: var(--spacing-sm);
+    font-size: 0.9rem;
+}
+
+.key-takeaway {
+    background: #fff3cd;
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius);
+    border-left: 0.25rem solid var(--warning-color);
+}
+
+.key-takeaway h4 {
+    color: var(--warning-color);
+    margin-top: 0;
+}
+
+/* TUTORIAL INSTRUCTIONS */
+.tutorial-instructions {
+    background: var(--card-background);
+    padding: var(--spacing-xl);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
+.tutorial-instructions h2 {
+    color: var(--primary-color);
+    margin-top: 0;
+}
+
+.tutorial-instructions h3 {
+    color: var(--info-color);
+    margin-top: var(--spacing-lg);
+}
+
+.tutorial-instructions ol li,
+.tutorial-instructions ul li {
+    margin-bottom: var(--spacing-sm);
+}
+
+/* UTILITY CLASSES */
+.hidden {
+    display: none !important;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.7; }
+    100% { opacity: 1; }
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 48rem) {
+    .container {
+        padding: var(--spacing-sm);
+    }
+    
+    header {
+        padding: var(--spacing-xl) var(--spacing-md);
+    }
+    
+    header h1 {
+        font-size: 2rem;
+    }
+    
+    .view-buttons {
+        grid-template-columns: 1fr;
+    }
+    
+    .card-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .insights-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .inspection-table {
+        font-size: 0.8rem;
+    }
+    
+    .inspection-table th,
+    .inspection-table td {
+        padding: var(--spacing-sm);
+    }
+}

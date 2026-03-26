@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial 7: Same Data, Different Stories</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Tutorial 7: Same Data, Different Stories</h1>
+            <p>How presentation shapes meaning: restaurant inspection data told three ways</p>
+        </header>
+
+        <!-- Data Loading Section -->
+        <section class="loading-section">
+            <h2>Load Prince George's County Restaurant Data</h2>
+            <div id="loading-status" class="status-display">
+                <p class="status-message">Ready to load restaurant inspection data</p>
+            </div>
+            <button id="load-data-button" class="load-button">Load Restaurant Data</button>
+            <div id="data-summary" class="data-summary hidden">
+                <p><span id="record-count">0</span> restaurants loaded • <span id="compliance-rate">0%</span> compliant • <span id="city-count">0</span> cities</p>
+            </div>
+        </section>
+
+        <!-- View Selection -->
+        <section class="view-controls hidden" id="view-controls">
+            <h2>Choose Your Story</h2>
+            <p>Same data, three different perspectives. Notice how each view emphasizes different insights.</p>
+            
+            <div class="view-buttons">
+                <button id="card-view-btn" class="view-button active">
+                    <span class="view-icon">🗂️</span>
+                    <div class="view-info">
+                        <strong>Card View</strong>
+                        <small>Browse and discover restaurants</small>
+                    </div>
+                </button>
+                <button id="table-view-btn" class="view-button">
+                    <span class="view-icon">📊</span>
+                    <div class="view-info">
+                        <strong>Table View</strong>
+                        <small>Compare inspection records</small>
+                    </div>
+                </button>
+                <button id="stats-view-btn" class="view-button">
+                    <span class="view-icon">📈</span>
+                    <div class="view-info">
+                        <strong>Stats View</strong>
+                        <small>Analyze compliance patterns</small>
+                    </div>
+                </button>
+            </div>
+        </section>
+
+        <!-- Data Display Area -->
+        <main class="display-container hidden" id="display-container">
+            
+            <!-- Card View -->
+            <div id="card-view" class="view-panel active">
+                <div class="view-header">
+                    <h3>Restaurant Discovery</h3>
+                    <p>Browse restaurants like a consumer looking for dining options</p>
+                </div>
+                <div id="card-grid" class="card-grid">
+                    <!-- Cards will be generated here -->
+                </div>
+            </div>
+
+            <!-- Table View -->
+            <div id="table-view" class="view-panel">
+                <div class="view-header">
+                    <h3>Inspection Comparison</h3>
+                    <p>Compare safety records like a health inspector or concerned parent</p>
+                </div>
+                <div class="table-container">
+                    <table id="inspection-table" class="inspection-table">
+                        <thead>
+                            <tr>
+                                <th>Restaurant</th>
+                                <th>City</th>
+                                <th>Inspection Date</th>
+                                <th>Results</th>
+                                <th>Hand Washing</th>
+                                <th>Food Temperature</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Table rows will be generated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Stats View -->
+            <div id="stats-view" class="view-panel">
+                <div class="view-header">
+                    <h3>County-wide Analysis</h3>
+                    <p>Analyze patterns like a public health official or policy researcher</p>
+                </div>
+                <div id="stats-grid" class="stats-grid">
+                    <!-- Stats cards will be generated here -->
+                </div>
+                <div id="city-breakdown" class="city-breakdown">
+                    <h4>Compliance by City</h4>
+                    <div id="city-stats" class="city-stats">
+                        <!-- City statistics will be generated here -->
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- Information Architecture Insights -->
+        <section class="tutorial-insights hidden" id="tutorial-insights">
+            <h2>Information Architecture Insights</h2>
+            <div class="insights-grid">
+                <div class="insight-card">
+                    <h4>Card View Story</h4>
+                    <p><strong>User Goal:</strong> "Where should I eat tonight?"</p>
+                    <p><strong>Emphasizes:</strong> Restaurant names, locations, recent activity</p>
+                    <p><strong>De-emphasizes:</strong> Detailed compliance data, comparisons</p>
+                </div>
+                <div class="insight-card">
+                    <h4>Table View Story</h4>
+                    <p><strong>User Goal:</strong> "Which restaurants have the best safety records?"</p>
+                    <p><strong>Emphasizes:</strong> Comparable data points, inspection details</p>
+                    <p><strong>De-emphasizes:</strong> Individual restaurant discovery</p>
+                </div>
+                <div class="insight-card">
+                    <h4>Stats View Story</h4>
+                    <p><strong>User Goal:</strong> "What are the overall safety trends?"</p>
+                    <p><strong>Emphasizes:</strong> Patterns, aggregates, geographic distribution</p>
+                    <p><strong>De-emphasizes:</strong> Individual restaurant details</p>
+                </div>
+            </div>
+            <div class="key-takeaway">
+                <h4>Key Takeaway</h4>
+                <p>The same dataset can serve completely different user needs. <strong>Information architecture is about choosing what to emphasize and what to hide.</strong> Every interface design decision shapes how users understand and interact with information.</p>
+            </div>
+        </section>
+
+        <!-- Tutorial Instructions -->
+        <section class="tutorial-instructions">
+            <h2>Your Tasks</h2>
+            <ol>
+                <li><strong>Load Data:</strong> Use async/await to load the restaurant GeoJSON data</li>
+                <li><strong>Card View:</strong> Display restaurants as browsable cards emphasizing discovery</li>
+                <li><strong>Table View:</strong> Show the same data as a comparison table emphasizing safety records</li>
+                <li><strong>Stats View:</strong> Aggregate the data to show county-wide patterns and insights</li>
+                <li><strong>View Switching:</strong> Allow users to toggle between the three presentations</li>
+            </ol>
+            
+            <h3>Skills Integration:</h3>
+            <ul>
+                <li><strong>Week 4:</strong> DOM manipulation for view switching</li>
+                <li><strong>Week 5:</strong> Array methods for data transformation</li>
+                <li><strong>Week 6:</strong> Async data loading and error handling</li>
+                <li><strong>Week 7:</strong> Multiple data presentations serving different user goals</li>
+            </ul>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
