@@ -1,11 +1,14 @@
 /* BASE STYLES - Students can modify and extend */
 :root {
-    --primary-color: #007cba;
+    --primary-color: #424242;
     --secondary-color: #28a745;
-    --background-color: #f8f9fa;
-    --card-background: #ffffff;
+    --background-color: #6a8fb4;
+    --card-background: #98b8d9;
     --text-color: #333;
     --border-color: #ddd;
+    --table-background: #f8f9fa;
+    --table-background-secondary: #95b6d6;
+    --table-hover-color: #d0e5fb;
     --shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -15,189 +18,244 @@ body {
     padding: 1rem;
     background: var(--background-color);
     color: var(--text-color);
-}
-
-.container {
+}.container {
     max-width: 1200px;
     margin: 0 auto;
-}
-
-.view-selector {
+}.view-selector {
     display: flex;
     gap: 1rem;
     margin: 2rem 0;
     flex-wrap: wrap;
-}
-
-.view-button {
+}.view-button {
     background: var(--primary-color);
-    color: white;
+    color: var(--table-background);
     border: none;
     padding: 0.75rem 1.5rem;
     border-radius: 4px;
     cursor: pointer;
     font-size: 1rem;
     transition: background-color 0.2s;
-}
-
-.view-button:hover {
-    background: #005a87;
-}
-
-.view-button.active {
+}.error-button {
+    background: var(--background-color);
+    color: var(--table-background);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.2s;
+}.view-button:hover {
+    background: var(--table-hover-color);
+    color: var(--primary-color);
+}.view-button.active {
     background: var(--secondary-color);
-}
-
-.display-container {
+    color: var(--table-background);
+}.display-container {
     background: var(--card-background);
     border-radius: 8px;
     padding: 2rem;
     min-height: 400px;
     box-shadow: var(--shadow);
-}
-
-.loading {
+}.loading {
     text-align: center;
-    color: #666;
+    color: var(--primary-color);
     font-style: italic;
     padding: 2rem;
-}
-
-.error {
-    background: #fee;
-    border: 1px solid #fcc;
-    color: #c00;
+}.error {
+    background: var(--table-background);
+    border: 0.5rem wavy var(--border-color);
+    color: var(--primary-color);
     padding: 1.5rem;
     border-radius: 4px;
     text-align: center;
 }
 
-/* UTILITY CLASSES FOR STUDENTS */
-.view-title {
+/* UTILITY CLASSES FOR STUDENTS */.view-title {
     margin: 0 0 1rem 0;
     color: var(--text-color);
-    border-bottom: 2px solid #eee;
+    border-bottom: 2px solid var(--border-color);
     padding-bottom: 0.5rem;
-}
-
-.view-description {
-    color: #666;
+}.view-description {
+    color: var(--primary-color);
     margin-bottom: 2rem;
     font-style: italic;
 }
 
-/* CARD GRID LAYOUT */
-.card-grid {
+/* CARD GRID LAYOUT */.card-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 1.5rem;
-}
-
-.restaurant-card {
+}.restaurant-card {
     border: 1px solid var(--border-color);
     border-radius: 8px;
     padding: 1.5rem;
     background: var(--card-background);
     transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.restaurant-card:hover {
+}.restaurant-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: var(--shadow);
 }
 
-/* TABLE LAYOUT */
-.restaurant-table {
+/* TABLE LAYOUT (legacy class if used elsewhere) */.restaurant-table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 1rem;
-}
-
-.restaurant-table th,
-.restaurant-table td {
+}.restaurant-table th,.restaurant-table td {
     padding: 0.75rem;
     text-align: left;
     border-bottom: 1px solid var(--border-color);
-}
-
-.restaurant-table th {
-    background: #f8f9fa;
+}.restaurant-table th {
+    background: var(--table-background);
     font-weight: 600;
+}.restaurant-table tr:hover {
+    background: var(--table-hover-color);
 }
 
-.restaurant-table tr:hover {
-    background: #f8f9fa;
-}
-
-/* CATEGORY GROUPS */
-.category-section {
+/* CATEGORY GROUPS */.category-section {
     margin-bottom: 2rem;
-}
-
-.category-header {
+}.category-header {
     background: var(--primary-color);
-    color: white;
+    color: var(--table-background);
     padding: 1rem;
     margin: 0;
     border-radius: 8px 8px 0 0;
-}
-
-.category-items {
+}.category-items {
     border: 1px solid var(--border-color);
     border-top: none;
     border-radius: 0 0 8px 8px;
-}
-
-.category-item {
+}.category-item {
     padding: 1rem;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--border-color);
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
-
-.category-item:last-child {
+}.category-item:last-child {
     border-bottom: none;
 }
 
-/* STATS LAYOUT */
-.stats-grid {
+/* STATS LAYOUT (legacy grid if you use it) */.stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1.5rem;
-}
-
-.stat-card {
+}.stat-card {
     text-align: center;
     padding: 2rem;
-    background: linear-gradient(135deg, var(--primary-color), #0056b3);
-    color: white;
+    background: linear-gradient(135deg, var(--primary-color), var(--background-color));
+    color: var(--table-background);
     border-radius: 8px;
-}
-
-.stat-number {
+}.stat-number {
     font-size: 3rem;
     font-weight: bold;
     margin: 0.5rem 0;
-}
-
-.stat-label {
+}.stat-label {
     font-size: 1.1rem;
     opacity: 0.9;
 }
 
 .todo-implementation {
-    background: #fff3cd;
-    border: 2px dashed #ffc107;
+    background: var(--table-background);
+    border: 2px dashed var(--secondary-color);
     border-radius: 8px;
     padding: 2rem;
-    text-align: center;
-    color: #856404;
-}
-
-.asst-box {
+    text-align: left;
+    color: var(--text-color);
+}.asst-box {
     margin-top: 2rem;
     padding: 1rem;
-    background: white;
+    background: var(--table-background);
     border-radius: 8px;
+}
+
+/* =========================
+   DATA TABLE (your main table)
+   ========================= */.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--table-background);
+    color: var(--text-color);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+}.data-table thead th {
+    background: var(--primary-color);
+    color: var(--table-background);
+    text-align: left;
+    padding: 12px 14px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+}.data-table tbody td {
+    padding: 10px 14px;
+    border-top: 1px solid var(--border-color);
+    vertical-align: top;
+}.data-table tbody tr:nth-child(even) {
+    background: var(--table-background-secondary);
+}.data-table tbody tr:hover {
+    background: var(--table-hover-color);
+    color: var(--primary-color);
+}
+
+/* Make sortable headers look clickable */.data-table th[data-sort] {
+    cursor: pointer;
+    user-select: none;
+}.data-table th[data-sort]:hover {
+    background: var(--table-hover-color);
+    color: var(--primary-color);
+}
+
+@media (max-width: 700px) {.data-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
+
+/* =========================
+   STATS VIEW (simple bars)
+   ========================= */
+.todo-implementation.stats-bars,.todo-implementation h3 {
+    text-align: left;
+}.stats-bars {
+    margin-top: 10px;
+}.stats-row {
+    display: grid;
+    grid-template-columns: 200px 1fr 60px;
+    gap: 10px;
+    align-items: left;
+    margin: 10px 0;
+}.stats-label {
+    color: var(--text-color);
+    font-weight: 600;
+    line-height: 1.2;
+}.stats-bar-wrap {
+    height: 12px;
+    background: var(--card-background);
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}.stats-bar {
+    height: 100%;
+    min-width: 6px;
+    background: var(--secondary-color);
+}.stats-value {
+    text-align: right;
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+@media (max-width: 700px) {.stats-row {
+        grid-template-columns: 140px 1fr 50px;
+    }
+}
+#map {
+  height: 500px;
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow);
+}
+a {
+    color: var(--primary-color);
+    text-decoration: wavy underline;
 }

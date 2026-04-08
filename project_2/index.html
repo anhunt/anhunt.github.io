@@ -4,21 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restaurant Views - Framework Approach</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style-p2.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 </head>
+
 <body>
-  <body>
     <div class="container">
         <header>
             <h1>One Dataset Four Ways</h1>
             <p><strong>Assignment:</strong> This assignment asks you to use the same data Model to power four different Views through four different Controllers. Each presentation emphasizes different aspects of the information to serve different user goals.</p>
-        </header>
-
-        <nav class="view-selector">
+            <p><strong>Note:</strong> This assignment was completed with walkthrough assistance from TerpAI GPT 5.2 and Co-Pilot 'Inline Suggestions'. This note serves as acknowledgment of GenAI application use, as outlined in UMD's <a href="https://ai.umd.edu/resources-guidelines/guidelines-for-use" target="_blank">'Guidelines for Use'</a>.</p>
             <button class="view-button" id="btn-categories" data-view="categories">Category View</button>
             <button class="view-button" id="btn-table" data-view="table">Table View</button>
             <button class="view-button" id="btn-stats" data-view="stats">Stats View</button>
-            <button class="view-button" id="btn-external" data-view="stats">External Library View</button>
+            <button class="view-button" id="btn-external" data-view="external">External Library View</button>
         </nav>
 
         <main class="display-container">
@@ -35,7 +34,7 @@
                 <li><strong>Make each view useful:</strong> What information does each presentation emphasize?</li>
                 <li><strong>Add your own styling:</strong> Make it visually appealing and easy to use by editing the CSS</li>
             </ol>
-            
+
             <h3>Why Four Presentations?</h3>
             <ul>
                 <li><strong>Category View:</strong> Emphasizes groupings and relationships, good for Cards</li>
@@ -45,6 +44,8 @@
             </ul>
         </section>
     </div>
-    <script type="module" src="./script.js" defer></script>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script type="module" src="./script.js"></script>
 </body>
-</html>x`
+</html>
