@@ -3,13 +3,15 @@
  * Group data by categories - good for understanding relationships and patterns
  */
 function showCategories(data) {
-  // TODO: Students implement this function
   // Requirements:
   // - Group data by a meaningful category (cuisine, neighborhood, price, etc.)
   // - Show items within each group
   // - Make relationships between groups clear
   // - Consider showing group statistics
-  /*html*/
+
+  /* JavaScript Goes Here */ 
+
+  /* html */
   return `
                 <h2 class="view-title">📂 Category View</h2>
                 <div class="todo-implementation">
@@ -23,5 +25,6 @@ function showCategories(data) {
                 </div>
             `;
 }
+
 
 export default showCategories;

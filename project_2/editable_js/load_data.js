@@ -1,14 +1,17 @@
 // ============================================
-// DATA LOADING - Students modify this
+// DATA LOADING
 // ============================================
-/**
- * Load data from API - Students replace with their chosen endpoint
- */
+
 async function loadData() {
   try {
-    // TODO: Replace with student's chosen API
-    const response = await fetch ('https://api.artic.edu/api/v1/artworks?limit=20&fields=id,title,artist_title,date_start,department_title,artwork_type_title,place_of_origin')
+    // Load your data here by passing a string to the Fetch request.
+    // It should be in data.json in the root folder, but you'll need to look at the results to see what's there.
+
+    const response = await fetch ('')  // go get some data
     const data = await response.json();
+    console.log("data loaded", data);
+    
+    // You'll need to look at that data in the console to make sure you have restaurants to work with
     return data;
   } catch (error) {
     console.error("Failed to load data:", error);

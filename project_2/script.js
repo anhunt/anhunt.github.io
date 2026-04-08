@@ -1,7 +1,8 @@
-import showCards from './editable_js/template_cards.js';
+
 import showCategories from './editable_js/template_category.js';
 import showStats from './editable_js/template_stats.js';
 import showTable from './editable_js/template_table.js';
+import showExternal from './editable_js/template_external.js';
 
 import loadData from './editable_js/load_data.js';
 
@@ -65,9 +66,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.log(`Loaded ${data.length} items from API`);
 
     // Set up button event handlers - this pattern always works!
-    document.getElementById("btn-cards").onclick = () => {
-      updateDisplay(showCards(data));
-      updateButtonStates("cards");
+    document.getElementById("btn-external").onclick = () => {
+      updateDisplay(showExternal(data));
+      updateButtonStates("external");
     };
 
     document.getElementById("btn-table").onclick = () => {
@@ -86,8 +87,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     };
 
     // Show initial view
-    updateDisplay(showCards(data));
-    updateButtonStates("cards");
+    updateDisplay(showExternal(data));
+    updateButtonStates("external");
 
     console.log("Application ready!");
   } catch (error) {
