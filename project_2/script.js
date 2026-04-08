@@ -1,9 +1,9 @@
-import showCategories from './editable_js/template_category.js';
-import showStats from './editable_js/template_stats.js';
-import showTable from './editable_js/template_table.js';
-import showExternal from './editable_js/template_external.js';
+import showCategories from "./editable_js/template_category.js";
+import showStats from "./editable_js/template_stats.js";
+import showTable from "./editable_js/template_table.js";
+import showExternal from "./editable_js/template_external.js";
 
-import loadData from './editable_js/load_data.js';
+import loadData from "./editable_js/load_data.js";
 
 // ============================================
 // DISPLAY MANAGEMENT - PROVIDED
@@ -84,13 +84,34 @@ function attachTableSortingListeners(data) {
     };
   });
 }
+
+// ============================================
+// CATEGORY VIEW - jump menu wiring (ADDED)
+// ============================================
+
+function attachCategoryJumpListener() {
+  const container = document.getElementById("data-display");
+  if (!container) return;
+
+  const select = container.querySelector("#cityJump");
+  if (!select) return;
+
+  select.onchange = (e) => {
+    const id = e.target.value;
+    if (!id) return;
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+}
+
 // ============================================
 // MAP VIEW
 // ============================================
 
 function initExternalView(data) {
   if (!window.L) {
-    console.error("Leaflet (L) not found. Make sure leaflet.js is included in index.html.");
+    console.error(
+      "Leaflet (L) not found. Make sure leaflet.js is included in index.html."
+    );
     return;
   }
 
@@ -170,8 +191,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("btn-external").onclick = () => {
       updateDisplay(showExternal(data));
       updateButtonStates("external");
-        initExternalView(data);
-
+      initExternalView(data);
     };
 
     document.getElementById("btn-table").onclick = () => {
@@ -185,6 +205,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("btn-categories").onclick = () => {
       updateDisplay(showCategories(data));
       updateButtonStates("categories");
+
+      // ADDED: attach jump menu listener after categories HTML is in the DOM
+      attachCategoryJumpListener();
     };
 
     document.getElementById("btn-stats").onclick = () => {
