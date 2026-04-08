@@ -3,7 +3,6 @@
  * Groups GeoJSON features by properties.city
  */
 function showCategories(data) {
-  // Accept either an array of features OR a GeoJSON object with.features
   const features = Array.isArray(data) ? data : (data?.features ?? []);
 
   const norm = (v) => {
@@ -45,17 +44,57 @@ function showCategories(data) {
     </div>
   `;
 
-  // 3) Build sections
+  // Helper: get top categories string for a group
+  const topCategoriesFor = (cityFeatures, topN = 3) => {
+    const catCounts = new Map();
+    for (const f of cityFeatures) {
+      const cat = norm(f?.properties?.category);
+      catCounts.set(cat, (catCounts.get(cat) ?? 0) + 1);
+    }
+    return [...catCounts.entries()].sort((a, b) => b[1] - a[1]).slice(0, topN).map(([cat, c]) => `${cat} (${c})`).join(", ");
+  };
+
+  // 3a) Summary table (makes relationships between groups very clear)
+  const summaryRowsHtml = sortedGroups.map(([city, cityFeatures]) => {
+      const cityId = `city-${slug(city)}`;
+      const pct = Math.round((cityFeatures.length / total) * 100);
+      const topCats = topCategoriesFor(cityFeatures, 1) || "Unknown";
+
+      return `
+        <tr>
+          <td><a href="#${cityId}">${city}</a></td>
+          <td>${cityFeatures.length}</td>
+          <td>${pct}%</td>
+          <td>${topCats}</td>
+        </tr>
+      `;
+    }).join("");
+
+  const summaryHtml = `
+    <div class="category-summary">
+      <h3>City Summary</h3>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>City</th>
+            <th>Count</th>
+            <th>% of total</th>
+            <th>Top category</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${summaryRowsHtml}
+        </tbody>
+      </table>
+      <p><small>Tip: use the dropdown or click a city in the table to jump.</small></p>
+    </div>
+  `;
+
+  // 3b) Build per-city sections
   const sectionsHtml = sortedGroups.map(([city, cityFeatures]) => {
       const cityId = `city-${slug(city)}`;
 
-      // group stats: category breakdown (top 3)
-      const catCounts = new Map();
-      for (const f of cityFeatures) {
-        const cat = norm(f?.properties?.category);
-        catCounts.set(cat, (catCounts.get(cat) ?? 0) + 1);
-      }
-      const topCats = [...catCounts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 3).map(([cat, c]) => `${cat} (${c})`).join(", ");
+      const topCats = topCategoriesFor(cityFeatures, 3);
 
       // sort items by name
       const sortedItems = [...cityFeatures].sort((a, b) =>
@@ -102,6 +141,9 @@ function showCategories(data) {
       <p><strong>Total items:</strong> ${features.length}</p>
       ${cityMenuHtml}
     </div>
+
+    ${summaryHtml}
+
     ${sectionsHtml}
   `;
 }
