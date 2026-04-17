@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Solar Wind Band</title>
+
+    <link rel="stylesheet" href="./style-project3.css" />
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.165.0/build/three.module.js"
+        }
+      }
+    </script>
+  </head>
+
+  <body>
+    <div class="grid">
+      <header class="header">
+        <h1>Today's Cosmic Forecast</h1>
+      </header>
+
+      <main class="content" aria-label="Visualization content area">
+        <canvas id="viz" class="content-bg" aria-hidden="true"></canvas>
+
+        <div class="content-overlay">
+
+          <div id="forecast" class="forecast">
+            <div class="forecast-title">Loading…</div>
+            <div class="forecast-body">Forecast will go here??</div>
+          </div>
+        </div>
+      </main>
+
+      <footer class="footer">
+                <div id="hud" class="hud footer-hud">Loading plasma…</div>
+        <div class="footer-text">
+          <p><strong>Note:</strong> Background visualization is an *+~.artistic.~+* interpretation of the data.</p>
+          <p>Visualization uses NOAA Space Weather Prediction Center's solar wind data API mapped to visual elements.</p>
+          <p><b>speed</b> → flow/turbulence, <b>density</b> → particle size, <b>temperature</b> → color.</p>
+        </div>
+      </footer>
+    </div>
+
+    <script type="module" src="./script.js"></script>
+  </body>
+</html>
