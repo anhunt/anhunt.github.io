@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Solar Wind Band</title>
+    <title>COSMIC FORECAST</title>
 
     <link rel="stylesheet" href="./style-project3.css" />
 
@@ -19,29 +19,89 @@
   <body>
     <div class="grid">
       <header class="header">
-        <h1>Today's Cosmic Forecast</h1>
+        <h1>Cosmic Forecast</h1>
+        <button id="aboutBtn" class="about-btn" type="button" aria-haspopup="dialog" aria-controls="aboutModal">
+          About
+        </button>
       </header>
 
-      <main class="content" aria-label="Visualization content area">
-        <canvas id="viz" class="content-bg" aria-hidden="true"></canvas>
+      <!-- LEFT: visualizer window -->
+      <section class="canvas-panel" aria-label="Visualization window">
+        <canvas id="viz" aria-label="Three.js visualization canvas"></canvas>
+      </section>
 
-        <div class="content-overlay">
+      <!-- RIGHT: content window -->
+      <aside class="content-panel" aria-label="Forecast and readouts">
+        <div class="panel-title">CONSOLE</div>
 
-          <div id="forecast" class="forecast">
-            <div class="forecast-title">Loading…</div>
-            <div class="forecast-body">Forecast will go here??</div>
+        <section id="forecast" class="forecast" aria-live="polite">
+          <div class="forecast-meta">
+            <div class="forecast-meta-row"><span class="k">date:</span> <span id="forecastDate" class="v">—</span></div>
+            <div class="forecast-meta-row"><span class="k">alert level:</span> <span id="forecastAlert" class="v">—</span></div>
           </div>
-        </div>
-      </main>
+          <div id="forecastReading" class="forecast-reading">Tuning antenna…</div>
+        </section>
+
+        <section class="hud-wrap" aria-label="Live readouts">
+          <div class="hud-title">LIVE READOUT</div>
+
+          <div class="readout-grid">
+            <div class="readout-box">
+              <div class="readout-box-title">SOLAR WIND</div>
+              <div id="hudPlasma" class="hud">Loading plasma…</div>
+            </div>
+
+            <div class="readout-box">
+              <div class="readout-box-title">GEOMAGNETIC (Kp)</div>
+              <div id="hudKp" class="hud">Loading Kp…</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="explain">
+          <div class="explain-title">WHAT YOU'RE SEEING</div>
+          <p>
+            An <em>*+~.artistic.~+*</em> interpretation of NOAA SWPC space‑weather data.
+          </p>
+        </section>
+      </aside>
 
       <footer class="footer">
-                <div id="hud" class="hud footer-hud">Loading plasma…</div>
         <div class="footer-text">
-          <p><strong>Note:</strong> Background visualization is an *+~.artistic.~+* interpretation of NOAA SWPC solar wind api data.</p>
-          <p> API variable → three.js particle visual element, so <b>speed</b> → flow/turbulence, <b>density</b> → particle size, <b>temperature</b> → color.</p>
-                    <p>Data updated every 5 minutes.</p>
+          Data source: NOAA SWPC JSON products. Artistic mapping; not a scientific forecast. Solar wind data updates every five minutes. 
         </div>
       </footer>
+    </div>
+
+    <!-- About modal -->
+    <div id="aboutModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="aboutTitle" hidden>
+      <div class="modal-backdrop" data-close="1"></div>
+
+      <div class="modal-panel" role="document">
+        <div class="modal-header">
+          <div id="aboutTitle" class="modal-title">About</div>
+          <button class="modal-close" type="button" aria-label="Close" data-close="1">Close</button>
+        </div>
+
+        <div class="modal-body">
+          <p>
+            This console visualizes near‑real‑time solar wind and geomagnetic activity from NOAA SWPC.
+            The “forecast” text is a playful, deterministic reading based on the current conditions.
+          </p>
+          <p> For the visualization, actual solar wind data is mapped to visual properties:</p>
+
+          <ul>
+            <li><b>Speed</b> influences how fast streaks move</li>
+            <li><b>Density</b> influences streak thickness</li>
+            <li><b>Temperature</b> influences color</li>
+            <li><b>Kp</b> sets alert level and disturbance level</li>
+          </ul>
+
+          <p class="modal-disclaimer">
+            Disclaimer: artistic mapping of public data; not a physical simulation.
+          </p>
+        </div>
+      </div>
     </div>
 
     <script type="module" src="./script.js"></script>
