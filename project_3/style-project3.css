@@ -361,9 +361,9 @@ a, a:visited {
 .readout-box--full{ grid-column: 1 / -1; }
 
 .chart-wrap{
-  height: 140px;      /* pick: 120–180 is nice */
+  height: 100px;
   width: 100%;
-  position: relative; /* helps Chart.js sizing */
+  position: relative;
   min-width: 0;
 }
 
@@ -377,7 +377,7 @@ a, a:visited {
     .content-panel{ overflow: visible; 
     }
     .canvas-panel{
-    height: min(52vh, 420px);
+    height: min(40vh, 420px);
   }
   .grid{
     grid-template-columns: 1fr;
