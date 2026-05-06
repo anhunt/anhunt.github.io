@@ -86,6 +86,68 @@ async function fetchLatestKp() {
 }
 
 /* =========================
+   Kp series (last 24 hours) for Chart.js
+========================= */
+function parseNoaaTime(x) {
+  if (!x) return null;
+  const d = new Date(x);
+  return Number.isNaN(d.getTime()) ? null : d;
+}
+
+async function fetchKpSeriesLast24h() {
+  const data = await fetchJSON(KP_URL);
+  const now = Date.now();
+  const cutoff = now - 24 * 60 * 60 * 1000;
+
+  const points = [];
+
+  // Case A: array-of-objects
+  if (Array.isArray(data) && data.length && typeof data[0] === "object" && !Array.isArray(data[0])) {
+    for (const row of data) {
+      const kp = Number(row.kp ?? row.Kp ?? row.kp_index ?? row.estimated_kp);
+      const timeRaw = row.time_tag ?? row.time ?? row.datetime ?? row.date;
+      const d = parseNoaaTime(timeRaw);
+      if (!Number.isFinite(kp) || !d) continue;
+      if (d.getTime() >= cutoff) points.push({ t: d, y: kp });
+    }
+  }
+
+  // Case B: array-of-arrays
+  else if (Array.isArray(data) && data.length && Array.isArray(data[0])) {
+    const headers = data[0];
+    const rows = data.slice(1);
+
+    const pick = (obj, keys) => {
+      for (const k of keys) if (obj[k] != null && obj[k] !== "") return obj[k];
+      return null;
+    };
+
+    for (const r of rows) {
+      const obj = Object.fromEntries(headers.map((h, j) => [h, r[j]]));
+      const kpRaw = pick(obj, ["kp", "Kp", "kp_index", "estimated_kp"]);
+      const timeRaw = pick(obj, ["time_tag", "time", "datetime", "date"]);
+      const kp = Number(kpRaw);
+      const d = parseNoaaTime(timeRaw);
+      if (!Number.isFinite(kp) || !d) continue;
+      if (d.getTime() >= cutoff) points.push({ t: d, y: kp });
+    }
+  } else {
+    throw new Error("Unexpected Kp JSON format (series).");
+  }
+
+  points.sort((a, b) => a.t - b.t);
+
+  // de-dup identical timestamps
+  const deduped = [];
+  for (const p of points) {
+    const last = deduped[deduped.length - 1];
+    if (!last || last.t.getTime() !== p.t.getTime()) deduped.push(p);
+  }
+
+  return deduped;
+}
+
+/* =========================
    Math helpers
 ========================= */
 function ema(prev, next, alpha) {
@@ -114,11 +176,11 @@ function formatUTC(isoString) {
    Disturbance level + alert (from Kp)
 ========================= */
 function disturbanceLevel(kp) {
-  if (kp >= 9) return { label: "EXTREME", alert: "!!!!!" };
-  if (kp >= 7) return { label: "STRONG STORM", alert: "!!!" };
-  if (kp >= 5) return { label: "MINOR STORM", alert: "!!" };
-  if (kp >= 3) return { label: "UNSETTLED", alert: "!" };
-  return { label: "QUIET", alert: "SECURE" };
+  if (kp >= 9) return { label: "extreme storm", alert: "🚨"};
+  if (kp >= 7) return { label: "strong storm", alert:"‼️" };
+  if (kp >= 5) return { label: "minor storm", alert: "⚠️" };
+  if (kp >= 3) return { label: "unsettled", alert: "🟡" };
+  return { label: "quiet", alert: "🟢" };
 }
 
 /* =========================
@@ -140,77 +202,77 @@ function tarotReading({ v01, n01, t01, kp }) {
   const { label } = disturbanceLevel(kp);
 
   const windLow = [
-    "The current moves like a slow river behind glass.",
-    "A gentle drift suggests patience wins today.",
-    "The air is quiet; small choices echo loudly.",
+    "Try standing still.",
+    "It may not be too soon to stop trying to start over.",
+    "You are not as stuck as you think you are.",
   ];
   const windMid = [
-    "The current is awake—steady, watchful, and moving.",
-    "Momentum builds in the background; follow the easiest path.",
-    "The flow is confident. Don’t force it—ride it.",
+    "Do not devote yourself to chasing ghosts.",
+    "Your resistance to change is eroding you in the wrong places.",
+    "Stop taking the easy way out.",
   ];
   const windHigh = [
-    "The current is restless—fast, sharp, and impossible to ignore.",
-    "Everything accelerates. Say yes only to what can keep up.",
-    "The wind is loud. Let it carry the brave plan forward.",
+    "Springing past the storm was never possible. ",
+    "You will never catch up to your ghosts.",
+    "You cannot outrun your shadow.",
   ];
 
   const densLow = [
-    "Space feels spacious: leave room for surprises.",
-    "Less clutter means clearer signals.",
-    "Empty pockets make the best inventory slots.",
+    "Put space between you the noise in your head.",
+    "There is room to grow.",
+    "Growth is continuous.",
   ];
   const densMid = [
-    "The field is populated: collaboration beats solo grinding.",
-    "You’re not alone in the stream—watch for patterns.",
-    "Enough particles to make meaning, not noise.",
+    "You do not have to go at it alone.",
+    "You are not alone.",
+    "Listen, you are not on your own.",
   ];
   const densHigh = [
-    "The lane is crowded: boundaries are your shield.",
-    "High density: choose one quest, ignore the side chatter.",
-    "Compression brings focus—keep it simple and strong.",
+    "The storm is inside you. It is you.",
+    "You can survive the storm, you always have.",
+    "Change comes with discomfort.",
   ];
 
   const tempLow = [
-    "Cool tones: intuition whispers instead of shouting.",
-    "The palette stays subtle—listen for the quiet yes.",
-    "Cold light favors careful timing.",
+    "It is never comfortable to leave a cozy house.",
+    "Do not invite closeness just because you yearn for warmth.",
+    "It is okay to seek refuge.",
   ];
   const tempMid = [
-    "Warm glow: your instincts are readable and steady.",
-    "Color shifts gently—adjust, don’t restart.",
-    "Balanced heat: consistency becomes a superpower.",
+    "Keep going just because you can.",
+    "You have somehow managed to survive thus far.",
+    "It will be alright.",
   ];
   const tempHigh = [
-    "Hot chroma: creativity runs bright and slightly feral.",
-    "The colors flare—make something bold on purpose.",
-    "High heat: channel energy into one clean move.",
+    "Let go of the lingering, of the clinging.",
+    "Discomfort sticks to you like a second skin.",
+    "Consider letting go of that which holds you back.",
   ];
 
   const kpQuiet = [
-    "Disturbance is quiet: the universe is in low-power mode.",
-    "Quiet field: your plan can be boring—and still work.",
-    "Quiet skies: maintenance tasks succeed.",
+    "Exist in stillness even when it is uncomfortable.",
+    "Take the silence for what it is.",
+    "Do not find new ways to put yourself in danger just to feel something.",
   ];
   const kpUnsettled = [
-    "Disturbance is unsettled: expect mild plot twists.",
-    "Unsettled field: keep your schedule flexible.",
-    "Unsettled skies: small glitches, easy fixes.",
+    "Maybe expect a plot twist.",
+    "Stay flexible.",
+    "Do not expect everything to always stay the same.",
   ];
   const kpMinor = [
-    "Disturbance is minor storm: momentum comes with static.",
-    "Minor storm: protect your focus like a rare item.",
-    "Minor storm: bold moves work, but cost stamina.",
+    "Protect what matters most to you.",
+    "Protect your energy.",
+    "Protect your time.",
   ];
   const kpStrong = [
-    "Disturbance is strong storm: the map is changing underfoot.",
-    "Strong storm: take the shortcut, not the detour.",
-    "Strong storm: verify once, then commit.",
+    "Strong storms surge inside you.",
+    "The strong storm will pass.",
+    "This will not last forever.",
   ];
   const kpExtreme = [
-    "Disturbance is extreme: reality is in glitch-art mode.",
-    "Extreme field: don’t multitask—pick one boss and finish it.",
-    "Extreme storm: chaos is a ladder, if you climb carefully.",
+    "You await dangerous weather while you are the storm.",
+    "You let your pain obliterate you.",
+    "A storm is trapped inside you.",
   ];
 
   const windSet = v01 < 0.33 ? windLow : v01 < 0.66 ? windMid : windHigh;
@@ -218,20 +280,21 @@ function tarotReading({ v01, n01, t01, kp }) {
   const tempSet = t01 < 0.33 ? tempLow : t01 < 0.66 ? tempMid : tempHigh;
 
   const kpSet =
-    label === "QUIET" ? kpQuiet :
-    label === "UNSETTLED" ? kpUnsettled :
-    label === "MINOR STORM" ? kpMinor :
-    label === "STRONG STORM" ? kpStrong :
+    label === "quiet" ? kpQuiet :
+    label === "unsettled" ? kpUnsettled :
+    label === "minor storm" ? kpMinor :
+    label === "strong storm" ? kpStrong :
     kpExtreme;
 
-  const seedBase = `${Math.round(v01*100)}|${Math.round(n01*100)}|${Math.round(t01*100)}|${Math.round(kp*10)}`;
+  const seedBase = `${Math.round(v01 * 100)}|${Math.round(n01 * 100)}|${Math.round(t01 * 100)}|${Math.round(kp * 10)}`;
   const seed = hashString(seedBase);
 
   const s1 = pickDeterministic(windSet, seed);
   const s2 = pickDeterministic(densSet, seed >>> 1);
   const s3 = pickDeterministic(kpSet, seed >>> 2);
+  const s4 = pickDeterministic(tempSet, seed >>> 3);
 
-  return `${s1} ${s2} ${s3}`;
+  return `${s1} ${s2} ${s3} ${s4}`;
 }
 
 /* =========================
@@ -250,14 +313,84 @@ const forecastReading = document.querySelector("#forecastReading");
 const hudPlasma = document.querySelector("#hudPlasma");
 const hudKp = document.querySelector("#hudKp");
 
+/* Chart.js canvas (new) */
+const kpChartCanvas = document.querySelector("#kpChart");
+
 console.log("DOM check:", {
   forecastDate: !!forecastDate,
   forecastAlert: !!forecastAlert,
   forecastReading: !!forecastReading,
   hudPlasma: !!hudPlasma,
   hudKp: !!hudKp,
+  kpChart: !!kpChartCanvas,
   viz: !!canvas
 });
+
+/* =========================
+   Chart.js init + update (new)
+========================= */
+let kpChart = null;
+
+function initKpChart() {
+  if (!kpChartCanvas) return;
+
+  // Chart.js is loaded via <script ...chart.umd...> so it's a global
+  if (typeof Chart === "undefined") {
+    console.warn("Chart.js not found. Did you include chart.umd.min.js in index.html?");
+    return;
+  }
+
+  kpChart = new Chart(kpChartCanvas, {
+    type: "line",
+    data: {
+      labels: [],
+      datasets: [{
+        label: "Kp",
+        data: [],
+        borderColor: "rgba(125,255,214,0.95)",
+        backgroundColor: "rgba(125,255,214,0.15)",
+        fill: true,
+        tension: 0.25,
+        pointRadius: 0,
+        borderWidth: 2,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: false,
+      scales: {
+        x: {
+          ticks: { maxRotation: 0, autoSkip: true, maxTicksLimit: 6 }
+        },
+        y: {
+          min: 0,
+          max: 9,
+          ticks: { stepSize: 1 }
+        }
+      },
+      plugins: {
+        legend: { display: false }
+      }
+    }
+  });
+}
+
+function updateKpChart(points) {
+  if (!kpChart) return;
+
+  const labels = points.map(p => {
+    const hh = String(p.t.getUTCHours()).padStart(2, "0");
+    const mm = String(p.t.getUTCMinutes()).padStart(2, "0");
+    return `${hh}:${mm}`; // UTC
+  });
+
+  kpChart.data.labels = labels;
+  kpChart.data.datasets[0].data = points.map(p => p.y);
+  kpChart.update("none");
+}
+
+initKpChart();
 
 /* =========================
    About modal behavior
@@ -303,6 +436,29 @@ scene.background = null;
 const camera = new THREE.PerspectiveCamera(55, 1, 0.1, 300);
 camera.position.set(0, 0, 22);
 
+const mouse = { y: 0, z: 0, active: false };
+
+function updateMouseWorld(e) {
+  const r = canvas.getBoundingClientRect();
+  const nx = ((e.clientX - r.left) / r.width) * 2 - 1;
+  const ny = -(((e.clientY - r.top) / r.height) * 2 - 1);
+
+  // Convert NDC -> world at z=0 plane
+  const v = new THREE.Vector3(nx, ny, 0).unproject(camera);
+
+  // Ray from camera through v, intersect plane z=0
+  const dir = v.sub(camera.position).normalize();
+  const t = (0 - camera.position.z) / dir.z;
+
+  mouse.y = camera.position.y + dir.y * t;
+  mouse.z = camera.position.z + dir.z * t; // should be ~0, but keep for completeness
+  mouse.active = true;
+}
+
+canvas.addEventListener("pointermove", updateMouseWorld);
+canvas.addEventListener("pointerenter", () => (mouse.active = true));
+canvas.addEventListener("pointerleave", () => (mouse.active = false));
+
 /* =========================
    Band sizing: auto-fit to view
 ========================= */
@@ -329,9 +485,9 @@ function resizeToCanvas() {
   camera.updateProjectionMatrix();
   updateBandToFillView();
 }
+
 new ResizeObserver(resizeToCanvas).observe(canvas);
 resizeToCanvas();
-
 /* =========================
    Particle state
 ========================= */
@@ -391,7 +547,10 @@ function updateControlsFromPlasma(p) {
   const v = normLinear(p.speed, 250, 900);
 
   // tighter temp mapping so it changes more
-  const t = clamp01((Math.log10(p.temperature) - Math.log10(8e4)) / (Math.log10(8e5) - Math.log10(8e4)));
+  const t = clamp01(
+    (Math.log10(p.temperature) - Math.log10(8e4)) /
+    (Math.log10(8e5) - Math.log10(8e4))
+  );
 
   ctrl.n = ema(ctrl.n, n, 0.25);
   ctrl.v = ema(ctrl.v, v, 0.25);
@@ -421,7 +580,12 @@ function writeUI(p, k) {
   if (forecastAlert) forecastAlert.textContent = disturbanceLevel(k.kp).alert;
 
   if (forecastReading) {
-    forecastReading.textContent = tarotReading({ v01: ctrl.v, n01: ctrl.n, t01: ctrl.t, kp: k.kp });
+    forecastReading.textContent = tarotReading({
+      v01: ctrl.v,
+      n01: ctrl.n,
+      t01: ctrl.t,
+      kp: k.kp
+    });
   }
 }
 
@@ -441,7 +605,12 @@ function tick(tms) {
   const hueWiggle = lerp(0.12, 0.06, ctrl.n);
   const litWiggle = lerp(0.22, 0.12, ctrl.n);
 
-   for (let i = 0; i < COUNT; i++) {
+  // --- NEW: repulsion tuning ---
+  const repelRadius = bandHeight * 0.25;
+  const repelStrength = 0.15;
+  const r2 = repelRadius * repelRadius;
+
+  for (let i = 0; i < COUNT; i++) {
     // Move particle
     px[i] += baseV * speedMul[i];
 
@@ -449,6 +618,20 @@ function tick(tms) {
     const s = seed[i];
     py[i] += Math.sin(t * 0.7 + s) * 0.002 * wob;
     pz[i] += Math.cos(t * 0.6 + s) * 0.002 * wob;
+
+    // --- NEW: mouse repulsion in Y/Z plane ---
+    if (mouse.active) {
+      const dy = py[i] - mouse.y;
+      const dz = pz[i] - mouse.z;
+      const d2 = dy * dy + dz * dz;
+
+      if (d2 > 1e-6 && d2 < r2) {
+        const d = Math.sqrt(d2);
+        const f = 1 - d / repelRadius; // falloff 1..0
+        py[i] += (dy / d) * repelStrength * f;
+        pz[i] += (dz / d) * repelStrength * f;
+      }
+    }
 
     // Keep within band bounds
     py[i] = THREE.MathUtils.clamp(py[i], -bandHeight * 0.5, bandHeight * 0.5);
@@ -505,7 +688,12 @@ async function updateLoop() {
   try {
     if (forecastReading) forecastReading.textContent = "Updating…";
 
-    const [p, k] = await Promise.all([fetchLatestPlasma(), fetchLatestKp()]);
+    // NEW: also fetch last-24h series for the chart
+    const [p, k, kpSeries] = await Promise.all([
+      fetchLatestPlasma(),
+      fetchLatestKp(),
+      fetchKpSeriesLast24h()
+    ]);
 
     // Smooth raw values a bit
     plasmaSmooth.density = ema(plasmaSmooth.density, p.density, 0.25);
@@ -516,10 +704,13 @@ async function updateLoop() {
     // Update controls + derived animation params
     updateControlsFromPlasma(plasmaSmooth);
 
+    // Update chart (use raw series values)
+    updateKpChart(kpSeries);
+
     // Write UI (use smoothed kp for stability)
     writeUI(
-      {...p, density: plasmaSmooth.density, speed: plasmaSmooth.speed, temperature: plasmaSmooth.temperature },
-      {...k, kp: kpSmooth.kp ?? k.kp }
+      { ...p, density: plasmaSmooth.density, speed: plasmaSmooth.speed, temperature: plasmaSmooth.temperature },
+      { ...k, kp: kpSmooth.kp ?? k.kp }
     );
   } catch (e) {
     const msg = `Update failed: ${String(e)}`;

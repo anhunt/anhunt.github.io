@@ -6,22 +6,25 @@
   --text: rgba(235, 255, 250, 0.92);
   --muted: rgba(235, 255, 250, 0.70);
   --radius: 14px;
-  --radius2: 18px;
+  --radius2: 16px;
   --shadow: 0 18px 50px rgba(0,0,0,0.55);
+  --pixel: "Press Start 2P", ui-monospace, monospace;
 }
 
-*{ box-sizing:border-box; }
+*{ 
+  box-sizing:border-box; }
 
 html, body{
   height:100%;
   margin:0;
   background:
-    radial-gradient(1200px 800px at 20% 10%, rgba(125, 255, 214, 0.165), transparent 55%),
-    radial-gradient(900px 700px at 80% 30%, rgba(255, 79, 217, 0.147), transparent 60%),
-    radial-gradient(900px 700px at 60% 90%, rgba(74, 164, 255, 0.181), transparent 60%),
+    radial-gradient(1200px 800px at 20% 10%, rgba(125, 255, 214, 0.28), transparent 55%),
+    radial-gradient(900px 700px at 80% 30%, rgba(255, 79, 217, 0.24), transparent 60%),
+    radial-gradient(900px 700px at 60% 90%, rgba(74, 164, 255, 0.22), transparent 60%),
     var(--bg);
   color: var(--text);
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-size: 16px;
 }
 
 body::before{
@@ -38,7 +41,7 @@ body::before{
 }
 
 .grid{
-  max-height: 100%;
+  min-height: 100%;
   display: grid;
   grid-template-columns: 1.2fr 0.8fr;
   grid-template-rows: auto 1fr auto;
@@ -49,8 +52,26 @@ body::before{
   gap: 16px;
   padding: 16px;
 }
+a, a:visited {
+  color: var(--text);
+  text-decoration-line: underline;
+  text-decoration-style: wavy;
+  text-decoration-color: currentColor;
+  text-decoration-thickness: 0.12em;
+  text-underline-offset: 0.14em;
+}
 
-/* Header */.header{
+.header h1,
+.panel-title,
+.hud-title,
+.readout-box-title,
+.modal-title,
+.about-btn,
+.modal-close{
+  font-family: var(--pixel);
+}
+
+.header{
   grid-area: header;
   display:flex;
   align-items:center;
@@ -65,16 +86,19 @@ body::before{
   box-shadow: var(--shadow);
   position: relative;
   overflow: hidden;
-}.header::after{
+}
+
+.header::after{
   content:"";
   position:absolute;
   inset:0;
   pointer-events:none;
   border: 1px solid rgba(125,255,214,0.18);
   border-radius: var(--radius);
-}.header h1{
+}
+
+.header h1{
   margin:0;
-  font-family: "Press Start 2P", ui-monospace, monospace;
   font-size: 14px;
   line-height: 1.2;
   letter-spacing: 0.6px;
@@ -85,30 +109,22 @@ body::before{
     0 0 18px rgba(125,255,214,0.18);
 }
 
+/* About button */
 .about-btn{
-  font-family: "Press Start 2P", ui-monospace, monospace;
-  font-size: 11px;
+  font-size: 0.6rem;
   letter-spacing: 0.6px;
   text-transform: uppercase;
+
   padding: 10px 12px;
   border-radius: 12px;
   border: 1px solid rgba(255,255,255,0.14);
   background: rgba(0,0,0,0.18);
   color: rgba(235,255,250,0.9);
   cursor: pointer;
-}.about-btn:hover{
+}
+.about-btn:hover{
   border-color: rgba(125,255,214,0.35);
   box-shadow: 0 0 0 2px rgba(125,255,214,0.10);
-}
-
-.panel-title{
-  font-family: "Press Start 2P", ui-monospace, monospace;
-  font-size: 11px;
-  letter-spacing: 0.6px;
-  text-transform: uppercase;
-  color: rgba(235,255,250,0.78);
-  padding: 14px 16px 10px 16px;
-  border-bottom: 1px solid rgba(255,255,255,0.10);
 }
 
 .canvas-panel{
@@ -121,23 +137,15 @@ body::before{
   background:
     linear-gradient(180deg, rgba(0,0,0,0.20), rgba(0,0,0,0.55)),
     rgba(0,0,0,0.20);
-}.canvas-panel::after{
-  content:"";
-  position:absolute;
-  inset: 12px;
-  border-radius: calc(var(--radius2) - 8px);
-  border: none;
-  pointer-events:none;
-  z-index: 3;
-}.canvas-panel #viz{
-  width: 100%;
-  height: calc(100% - 45px);
-  display: block;
-  position: relative;
-  z-index: 1;
 }
 
-/* Content window */.content-panel{
+.canvas-panel #viz{
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.content-panel{
   grid-area: content;
   position: relative;
   overflow: auto;
@@ -150,7 +158,17 @@ body::before{
   padding: 16px;
 }
 
-/* Forecast box */.forecast{
+.panel-title{
+  font-size: 0.8rem;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: rgba(235,255,250,0.78);
+  padding: 14px 16px 10px 16px;
+  margin: -16px -16px 12px -16px; /* stretch to panel edges */
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+}
+
+.forecast{
   margin-top: 12px;
   padding: 14px 14px;
   border-radius: 14px;
@@ -160,7 +178,9 @@ body::before{
     inset 0 0 0 1px rgba(125,255,214,0.10),
     0 14px 40px rgba(0,0,0,0.45);
   max-width: 100%;
-}.forecast::before{
+}
+
+.forecast::before{
   content:"";
   display:block;
   height: 6px;
@@ -172,85 +192,81 @@ body::before{
     rgba(255,79,216,0.85)
   );
   opacity: 0.75;
-}.forecast-title{
-  font-family: "Press Start 2P", ui-monospace, monospace;
-  font-size: 12px;
-  line-height: 1.35;
-  letter-spacing: 0.6px;
-  text-transform: uppercase;
-  color: rgba(235,255,250,0.92);
-  text-shadow: 0 2px 0 rgba(0,0,0,0.55);
-  margin-bottom: 10px;
-}.forecast-meta{
-  display: grid;
-  gap: 6px;
-  margin-bottom: 10px;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-  font-size: 12px;
-  color: rgba(235,255,250,0.78);
-}.forecast-meta-row.k{
-  color: rgba(235,255,250,0.65);
-}.forecast-reading{
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-  font-size: 12px;
-  line-height: 1.55;
-  color: rgba(235,255,250,0.82);
 }
 
-/* Readouts */.hud-wrap{ margin-top: 14px; }.hud-title{
-  font-family: "Press Start 2P", ui-monospace, monospace;
+.forecast-reading{
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: rgba(235,255,250,0.86);
+  margin-bottom: 0.75rem;
+}
+
+.forecast-meta{
+  display: grid;
+  gap: 0.5rem;
+
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 0.75rem; /* requested */
+  color: rgba(235,255,250,0.78);
+}
+
+/* the activity row inside the Kp box uses the same k/v classes */
+.readout-box .forecast-meta-row{
+  margin-top: 8px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 0.75rem;
+  color: rgba(235,255,250,0.78);
+}
+.readout-box .forecast-meta-row .k{
+  color: rgba(0, 255, 191, 0.65);
+}
+
+.hud-wrap{ margin-top: 14px; }
+
+.hud-title{
   font-size: 11px;
   letter-spacing: 0.6px;
   text-transform: uppercase;
   color: rgba(235,255,250,0.78);
   margin: 14px 0 8px 0;
-}.readout-grid{
+}
+
+.readout-grid{
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
-}.readout-box{
+}
+
+.readout-box{
   padding: 12px 12px;
   border-radius: 14px;
   background: rgba(0,0,0,0.22);
   border: 1px solid rgba(255,255,255,0.10);
-}.readout-box-title{
-  font-family: "Press Start 2P", ui-monospace, monospace;
+}
+
+.readout-box-title{
   font-size: 10px;
   letter-spacing: 0.6px;
   text-transform: uppercase;
   color: rgba(235,255,250,0.78);
   margin: 0 0 8px 0;
-}.hud{
+}
+
+.hud{
   white-space: pre;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
   font-size: 12px;
   line-height: 1.35;
   color: var(--muted);
+
   padding: 12px 12px;
   border-radius: 12px;
   background: linear-gradient(180deg, rgba(10,8,24,0.78), rgba(10,8,24,0.55));
-  border: 0px solid var(--stroke2);
+  border: 0;
 }
 
-/* Explanation */.explain{
-  margin-top: 14px;
-  padding: 14px 14px;
-  border-radius: 14px;
-  background: rgba(0,0,0,0.22);
-  border: 1px solid rgba(255,255,255,0.10);
-  color: rgba(235,255,250,0.78);
-  line-height: 1.55;
-  font-size: 13px;
-}.explain-title{
-  font-family: "Press Start 2P", ui-monospace, monospace;
-  font-size: 11px;
-  letter-spacing: 0.6px;
-  text-transform: uppercase;
-  color: rgba(235,255,250,0.78);
-  margin-bottom: 8px;
-}.explain b{ color: rgba(235,255,250,0.92); }
-
-/* Footer */.footer{
+.footer{
   grid-area: footer;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
   padding: 12px 16px;
@@ -262,12 +278,18 @@ body::before{
   line-height: 1.5;
 }
 
-/* Modal */.modal[hidden]{ display: none; }.modal{ position: fixed; inset: 0; z-index: 9999; }.modal-backdrop{
+<!-- modal-->
+.modal[hidden]{ display: none; }
+.modal{ position: fixed; inset: 0; z-index: 9999; }
+
+.modal-backdrop{
   position: absolute;
   inset: 0;
   background: rgba(0,0,0,0.55);
   backdrop-filter: blur(6px);
-}.modal-panel{
+}
+
+.modal-panel{
   position: relative;
   width: min(760px, calc(100vw - 28px));
   margin: 8vh auto 0 auto;
@@ -276,7 +298,9 @@ body::before{
   background: rgba(10, 8, 24, 0.82);
   box-shadow: 0 24px 80px rgba(0,0,0,0.65);
   overflow: hidden;
-}.modal-header{
+}
+
+.modal-header{
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -284,35 +308,49 @@ body::before{
   padding: 14px 16px;
   border-bottom: 1px solid rgba(255,255,255,0.10);
 }
-.css-modal-title{
-    font-family: "Press Start 2P", ui-monospace, monospace;
+
+.modal-title{
   font-size: 12px;
   letter-spacing: 0.6px;
   text-transform: uppercase;
   color: rgba(235,255,250,0.92);
-}.modal-close{
-  font-family: ui-monospace, monospace;
-  font-size: 12px;
+}
+
+.modal-close{
+  font-size: 0.65rem;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+
   padding: 8px 10px;
   border-radius: 10px;
   border: 1px solid rgba(255,255,255,0.14);
   background: rgba(0,0,0,0.18);
   color: rgba(235,255,250,0.85);
   cursor: pointer;
-}.modal-close:hover{
+}
+
+.modal-close:hover{
   border-color: rgba(255,79,216,0.35);
   box-shadow: 0 0 0 2px rgba(255,79,216,0.10);
-}.modal-body{
+}
+
+.modal-body{
   padding: 14px 16px 18px 16px;
   color: rgba(235,255,250,0.78);
   line-height: 1.6;
   font-size: 13px;
-}.modal-body ul{
+}
+
+.modal-body ul{
   margin: 10px 0 12px 18px;
   padding: 0;
-}.modal-body b{
+}
+
+.modal-body b{
   color: rgba(235,255,250,0.92);
-}.modal-disclaimer{
+}
+
+.modal-disclaimer{
   margin-top: 10px;
   padding: 10px 12px;
   border-radius: 12px;
@@ -320,7 +358,12 @@ body::before{
   background: rgba(0,0,0,0.20);
   color: rgba(235,255,250,0.72);
 }
-@media (max-width: 900px){.grid{
+.readout-box--full{ grid-column: 1 / -1; }
+#kpChart{ width: 100%; height: 100px; display: block; 
+}
+
+@media (max-width: 900px){
+  .grid{
     grid-template-columns: 1fr;
     grid-template-rows: auto auto auto auto;
     grid-template-areas:
@@ -328,7 +371,8 @@ body::before{
       "canvas"
       "content"
       "footer";
-  }.readout-grid{
+  }
+  .readout-grid{
     grid-template-columns: 1fr;
   }
 }

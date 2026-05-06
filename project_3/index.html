@@ -20,30 +20,44 @@
     <div class="grid">
       <header class="header">
         <h1>Cosmic Forecast</h1>
-        <button id="aboutBtn" class="about-btn" type="button" aria-haspopup="dialog" aria-controls="aboutModal">
+        <button
+          id="aboutBtn"
+          class="about-btn"
+          type="button"
+          aria-haspopup="dialog"
+          aria-controls="aboutModal"
+        >
           About
         </button>
       </header>
 
-      <!-- LEFT: visualizer window -->
+      <!-- left: visualizer window -->
       <section class="canvas-panel" aria-label="Visualization window">
         <canvas id="viz" aria-label="Three.js visualization canvas"></canvas>
       </section>
 
-      <!-- RIGHT: content window -->
+      <!-- right: content window -->
       <aside class="content-panel" aria-label="Forecast and readouts">
         <div class="panel-title">CONSOLE</div>
 
         <section id="forecast" class="forecast" aria-live="polite">
-          <div class="forecast-meta">
-            <div class="forecast-meta-row"><span class="k">date:</span> <span id="forecastDate" class="v">—</span></div>
-            <div class="forecast-meta-row"><span class="k">alert level:</span> <span id="forecastAlert" class="v">—</span></div>
-          </div>
           <div id="forecastReading" class="forecast-reading">Tuning antenna…</div>
+
+          <div class="forecast-meta">
+            <div class="forecast-meta-row">
+              <span class="k"></span>
+              <span id="forecastDate" class="v">—</span>
+            </div>
+
+            <div class="forecast-meta-row">
+              <span class="k"><strong>alert:</strong></span>
+              <span id="forecastAlert" class="v">—</span>
+            </div>
+          </div>
         </section>
 
         <section class="hud-wrap" aria-label="Live readouts">
-          <div class="hud-title">LIVE READOUT</div>
+          <div class="hud-title"></div>
 
           <div class="readout-grid">
             <div class="readout-box">
@@ -52,58 +66,70 @@
             </div>
 
             <div class="readout-box">
-              <div class="readout-box-title">GEOMAGNETIC (Kp)</div>
+              <div class="readout-box-title">GEOMAGNETIC ACTIVITY</div>
               <div id="hudKp" class="hud">Loading Kp…</div>
             </div>
-          </div>
-        </section>
 
-        <section class="explain">
-          <div class="explain-title">WHAT YOU'RE SEEING</div>
-          <p>
-            An <em>*+~.artistic.~+*</em> interpretation of NOAA SWPC space‑weather data.
-          </p>
+            <div class="readout-box readout-box--full">
+              <div class="readout-box-title">KP [24HR]</div>
+              <div class="chart-wrap">
+                <canvas id="kpChart"></canvas>
+              </div>
+            </div>
+          </div>
         </section>
       </aside>
 
       <footer class="footer">
         <div class="footer-text">
-          Data source: NOAA SWPC JSON products. Artistic mapping; not a scientific forecast. Solar wind data updates every five minutes. 
+          Data source: NOAA SWPC JSON products. Artistic mapping; not a scientific forecast. Solar wind and KP data update every few minutes. Forecast updates alongside new data or page reload. JS in this project was created with assistance from TerpAI GPT-5.2 in accordance with UMD'S AI policy found <a href="https://ai.umd.edu/resources-guidelines/guidelines-for-use">here</a>.
         </div>
       </footer>
     </div>
 
-    <!-- About modal -->
-    <div id="aboutModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="aboutTitle" hidden>
+    <!-- about modal -->
+    <div
+      id="aboutModal"
+      class="modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="aboutTitle"
+      hidden
+    >
       <div class="modal-backdrop" data-close="1"></div>
 
       <div class="modal-panel" role="document">
         <div class="modal-header">
           <div id="aboutTitle" class="modal-title">About</div>
-          <button class="modal-close" type="button" aria-label="Close" data-close="1">Close</button>
+          <button class="modal-close" type="button" aria-label="Close" data-close="1">
+            Close
+          </button>
         </div>
 
         <div class="modal-body">
           <p>
             This console visualizes near‑real‑time solar wind and geomagnetic activity from NOAA SWPC.
-            The “forecast” text is a playful, deterministic reading based on the current conditions.
+            The “forecast” is a playful, deterministic reading based on the current conditions and is not to be taken seriously.
           </p>
-          <p> For the visualization, actual solar wind data is mapped to visual properties:</p>
+          <p><strong>Alert</strong> and <strong>Disturbance</strong> are mapped to KP ranges.</p>
+
+          <p>For the visualization, actual solar wind data is mapped to visual properties:</p>
 
           <ul>
             <li><b>Speed</b> influences how fast streaks move</li>
             <li><b>Density</b> influences streak thickness</li>
             <li><b>Temperature</b> influences color</li>
-            <li><b>Kp</b> sets alert level and disturbance level</li>
           </ul>
 
           <p class="modal-disclaimer">
-            Disclaimer: artistic mapping of public data; not a physical simulation.
+            Remember: This is an artistic mapping of public data; not a physical simulation.
           </p>
         </div>
       </div>
     </div>
 
+    <!-- Chart.js must load BEFORE your module uses Chart -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
     <script type="module" src="./script.js"></script>
   </body>
 </html>
