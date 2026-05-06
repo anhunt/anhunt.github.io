@@ -86,7 +86,7 @@ async function fetchLatestKp() {
 }
 
 /* =========================
-   Kp series (last 24 hours) for Chart.js
+   Kp series 7 days for Chart.js
 ========================= */
 function parseNoaaTime(x) {
   if (!x) return null;
@@ -94,10 +94,10 @@ function parseNoaaTime(x) {
   return Number.isNaN(d.getTime()) ? null : d;
 }
 
-async function fetchKpSeriesLast24h() {
+async function fetchKpSeriesLast7d() {
   const data = await fetchJSON(KP_URL);
   const now = Date.now();
-  const cutoff = now - 24 * 60 * 60 * 1000;
+  const cutoff = now - 7 * 24 * 60 * 60 * 1000;
 
   const points = [];
 
@@ -361,14 +361,21 @@ function initKpChart() {
       animation: false,
       scales: {
         x: {
-          ticks: { maxRotation: 0, autoSkip: true, maxTicksLimit: 6 }
-        },
-        y: {
-          min: 0,
-          max: 9,
-          ticks: { stepSize: 1 }
-        }
-      },
+  type: "time",
+  time: {
+    tooltipFormat: "MMM d, HH:mm",
+    displayFormats: {
+      hour: "MMM d, HH:mm",
+      day: "MMM d"
+    }
+  },
+  ticks: {
+    maxRotation: 0,
+    autoSkip: true,
+    maxTicksLimit: 7
+  }
+}
+      },  
       plugins: {
         legend: { display: false }
       }
@@ -379,14 +386,11 @@ function initKpChart() {
 function updateKpChart(points) {
   if (!kpChart) return;
 
-  const labels = points.map(p => {
-    const hh = String(p.t.getUTCHours()).padStart(2, "0");
-    const mm = String(p.t.getUTCMinutes()).padStart(2, "0");
-    return `${hh}:${mm}`; // UTC
-  });
+  kpChart.data.datasets[0].data = points.map(p => ({
+    x: p.t,   // Date object
+    y: p.y
+  }));
 
-  kpChart.data.labels = labels;
-  kpChart.data.datasets[0].data = points.map(p => p.y);
   kpChart.update("none");
 }
 
@@ -570,11 +574,12 @@ function writeUI(p, k) {
   }
 
   if (hudKp) {
-    const d = disturbanceLevel(k.kp);
-    hudKp.textContent =
-      `kp: ${k.kp.toFixed(1)}\n` +
-      `disturbance: ${d.label}`;
-  }
+  const d = disturbanceLevel(k.kp);
+  hudKp.textContent =
+    `kp: ${k.kp.toFixed(2)}\n` +
+    `alert: ${d.alert}\n` +
+    `disturbance: ${d.label}`;
+}
 
   if (forecastDate) forecastDate.textContent = formatUTC(p.time);
   if (forecastAlert) forecastAlert.textContent = disturbanceLevel(k.kp).alert;
@@ -688,11 +693,11 @@ async function updateLoop() {
   try {
     if (forecastReading) forecastReading.textContent = "Updating…";
 
-    // NEW: also fetch last-24h series for the chart
+    // NEW: also fetch last-7d series for the chart
     const [p, k, kpSeries] = await Promise.all([
       fetchLatestPlasma(),
       fetchLatestKp(),
-      fetchKpSeriesLast24h()
+      fetchKpSeriesLast7d()
     ]);
 
     // Smooth raw values a bit

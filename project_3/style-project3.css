@@ -196,7 +196,7 @@ a, a:visited {
 
 .forecast-reading{
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-  font-size: 0.85rem;
+  font-size: 1.2rem;
   line-height: 1.55;
   color: rgba(235,255,250,0.86);
   margin-bottom: 0.75rem;
@@ -211,7 +211,6 @@ a, a:visited {
   color: rgba(235,255,250,0.78);
 }
 
-/* the activity row inside the Kp box uses the same k/v classes */
 .readout-box .forecast-meta-row{
   margin-top: 8px;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
@@ -240,7 +239,7 @@ a, a:visited {
 
 .readout-box{
   padding: 12px 12px;
-  border-radius: 14px;
+  border-radius: 8px;
   background: rgba(0,0,0,0.22);
   border: 1px solid rgba(255,255,255,0.10);
 }
@@ -361,7 +360,7 @@ a, a:visited {
 .readout-box--full{ grid-column: 1 / -1; }
 
 .chart-wrap{
-  height: 100px;
+  height: 80px;
   width: 100%;
   position: relative;
   min-width: 0;

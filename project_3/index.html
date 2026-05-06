@@ -48,15 +48,10 @@
               <span class="k"></span>
               <span id="forecastDate" class="v">—</span>
             </div>
-
-            <div class="forecast-meta-row">
-              <span class="k"><strong>alert:</strong></span>
-              <span id="forecastAlert" class="v">—</span>
-            </div>
           </div>
         </section>
 
-        <section class="hud-wrap" aria-label="Live readouts">
+        <section class="hud-wrap" aria-label="live readouts">
           <div class="hud-title"></div>
 
           <div class="readout-grid">
@@ -71,9 +66,9 @@
             </div>
 
             <div class="readout-box readout-box--full">
-              <div class="readout-box-title">KP [24HR]</div>
+              <div class="readout-box-title">KP DISTURBANCE [7D]</div>
               <div class="chart-wrap">
-                <canvas id="kpChart" aria-label="KP chart over 24 hours"></canvas>
+                <canvas id="kpChart" aria-label="KP chart over 7 days"></canvas>
               </div>
             </div>
           </div>
@@ -130,6 +125,7 @@
 
     <!-- Chart.js must load BEFORE your module uses Chart -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3"></script>
     <script type="module" src="./script.js"></script>
   </body>
 </html>
