@@ -11,7 +11,7 @@ const KP_URL = "https://services.swpc.noaa.gov/products/noaa-planetary-k-index.j
 /* =========================
    Config
 ========================= */
-const POLL_MS = 60_000; // 1 minute
+const POLL_MS = 120_000; 
 const COUNT = 1600;
 const VIEW_MARGIN = 0.95;
 
@@ -202,25 +202,25 @@ function tarotReading({ v01, n01, t01, kp }) {
   const { label } = disturbanceLevel(kp);
 
   const windLow = [
-    "Try standing still.",
+    "Have you tried standing still?",
     "It may not be too soon to stop trying to start over.",
     "You are not as stuck as you think you are.",
   ];
   const windMid = [
-    "Do not devote yourself to chasing ghosts.",
-    "Your resistance to change is eroding you in the wrong places.",
-    "Stop taking the easy way out.",
+    "This is not the time to chase ghosts.",
+    "This is not the time to resist change.",
+    "This is not the time to give up.",
   ];
   const windHigh = [
-    "Springing past the storm was never possible. ",
-    "You will never catch up to your ghosts.",
-    "You cannot outrun your shadow.",
+    "Springing past the storm is not possible. ",
+    "Catching up to your ghosts is not possible.",
+    "Outrunning your shadow is not possible.",
   ];
 
   const densLow = [
-    "Put space between you the noise in your head.",
-    "There is room to grow.",
-    "Growth is continuous.",
+    "This is a chance to putspace between you the noise.",
+    "This is a chance to grow.",
+    "Know that your growth is continuous.",
   ];
   const densMid = [
     "You do not have to go at it alone.",
@@ -228,23 +228,23 @@ function tarotReading({ v01, n01, t01, kp }) {
     "Listen, you are not on your own.",
   ];
   const densHigh = [
-    "The storm is inside you. It is you.",
+    "You can survive the discomfort.",
     "You can survive the storm, you always have.",
-    "Change comes with discomfort.",
+    "You can change.",
   ];
 
   const tempLow = [
-    "It is never comfortable to leave a cozy house.",
-    "Do not invite closeness just because you yearn for warmth.",
-    "It is okay to seek refuge.",
+    "Reach for your friends.",
+    "Reach for the support you need.",
+    "Reach for the help you need.",
   ];
   const tempMid = [
-    "Keep going just because you can.",
+    "Keep going.",
     "You have somehow managed to survive thus far.",
     "It will be alright.",
   ];
   const tempHigh = [
-    "Let go of the lingering, of the clinging.",
+    "Let go of the lingering.",
     "Discomfort sticks to you like a second skin.",
     "Consider letting go of that which holds you back.",
   ];
@@ -252,7 +252,7 @@ function tarotReading({ v01, n01, t01, kp }) {
   const kpQuiet = [
     "Exist in stillness even when it is uncomfortable.",
     "Take the silence for what it is.",
-    "Do not find new ways to put yourself in danger just to feel something.",
+    "This is a chance to be still.",
   ];
   const kpUnsettled = [
     "Maybe expect a plot twist.",
@@ -265,14 +265,14 @@ function tarotReading({ v01, n01, t01, kp }) {
     "Protect your time.",
   ];
   const kpStrong = [
-    "Strong storms surge inside you.",
+    "Strong storms will pass.",
     "The strong storm will pass.",
     "This will not last forever.",
   ];
   const kpExtreme = [
-    "You await dangerous weather while you are the storm.",
-    "You let your pain obliterate you.",
-    "A storm is trapped inside you.",
+    "You can survive this, I promise.",
+    "You will survive the storm.",
+    "You will survive this.",
   ];
 
   const windSet = v01 < 0.33 ? windLow : v01 < 0.66 ? windMid : windHigh;
@@ -313,7 +313,7 @@ const forecastReading = document.querySelector("#forecastReading");
 const hudPlasma = document.querySelector("#hudPlasma");
 const hudKp = document.querySelector("#hudKp");
 
-/* Chart.js canvas (new) */
+/* Chart.js canvas */
 const kpChartCanvas = document.querySelector("#kpChart");
 
 console.log("DOM check:", {
@@ -334,9 +334,8 @@ let kpChart = null;
 function initKpChart() {
   if (!kpChartCanvas) return;
 
-  // Chart.js is loaded via <script ...chart.umd...> so it's a global
   if (typeof Chart === "undefined") {
-    console.warn("Chart.js not found. Did you include chart.umd.min.js in index.html?");
+    console.warn("Chart.js not found. Did you include chart.js in index.html?");
     return;
   }
 
