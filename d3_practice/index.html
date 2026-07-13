@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>UX Usability Results</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <header class="container">
+      <h1>UX Usability Results</h1>
+      <p class="subtle">Use the dropdown to switch metrics. Hover bars for details.</p>
+
+      <div class="toolbar">
+        <label class="control">
+          <span>Metric</span>
+          <select id="metric">
+            <option value="completion" selected>Completion (%)</option>
+            <option value="time">Average Completion Time (s)</option>
+            <option value="errors">Average Errors per Participant</option>
+          </select>
+        </label>
+
+        <label class="control">
+          <span>Sort tasks by</span>
+          <select id="sort">
+            <option value="task_asc">Task (A→Z)</option>
+            <option value="task_desc">Task (Z→A)</option>
+            <option value="completion_desc" selected>Completion (high→low)</option>
+            <option value="completion_asc">Completion (low→high)</option>
+            <option value="time_desc">Avg time (high→low)</option>
+            <option value="time_asc">Avg time (low→high)</option>
+            <option value="errors_desc">Avg errors (high→low)</option>
+            <option value="errors_asc">Avg errors (low→high)</option>
+          </select>
+        </label>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="card">
+        <div class="card-head">
+          <h2 id="chart-title">Completion by Task</h2>
+          <p id="chart-subtitle" class="subtle">Percent completed successfully.</p>
+        </div>
+
+        <div id="chart" class="chart"></div>
+      </section>
+    </main>
+
+    <footer class="container subtle">
+      <span id="status">Loading data…</span>
+    </footer>
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
