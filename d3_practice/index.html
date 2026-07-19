@@ -1,59 +1,117 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>UX Usability Results</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FIFA World Cup Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://unpkg.com/topojson-client@3"></script>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div>
+        <h1>FIFA World Cup Dashboard</h1>
+        <p>World Cup history, squad value, and recent performance</p>
+      </div>
 
-  <body>
-    <header class="container">
-      <h1>UX Usability Results</h1>
-      <p class="subtle">Use the dropdown to switch metrics. Hover bars for details.</p>
-
-      <div class="toolbar">
-        <label class="control">
-          <span>Metric</span>
-          <select id="metric">
-            <option value="completion" selected>Completion (%)</option>
-            <option value="time">Average Completion Time (s)</option>
-            <option value="errors">Average Errors per Participant</option>
+      <div class="controls">
+        <div class="control-group">
+          <label for="continentFilter">Filter by Continent</label>
+          <select id="continentFilter">
+            <option value="All">All</option>
           </select>
-        </label>
-
-        <label class="control">
-          <span>Sort tasks by</span>
-          <select id="sort">
-            <option value="task_asc">Task (A→Z)</option>
-            <option value="task_desc">Task (Z→A)</option>
-            <option value="completion_desc" selected>Completion (high→low)</option>
-            <option value="completion_asc">Completion (low→high)</option>
-            <option value="time_desc">Avg time (high→low)</option>
-            <option value="time_asc">Avg time (low→high)</option>
-            <option value="errors_desc">Avg errors (high→low)</option>
-            <option value="errors_asc">Avg errors (low→high)</option>
-          </select>
-        </label>
+        </div>
       </div>
     </header>
 
-    <main class="container">
-      <section class="card">
-        <div class="card-head">
-          <h2 id="chart-title">Completion by Task</h2>
-          <p id="chart-subtitle" class="subtle">Percent completed successfully.</p>
+    <section class="kpi-grid">
+      <div class="kpi-card accent-blue">
+        <h3>Total Teams</h3>
+        <p id="kpiTeams">0</p>
+      </div>
+      <div class="kpi-card accent-gold">
+        <h3>Most World Cup Titles</h3>
+        <p id="kpiTitles">-</p>
+      </div>
+      <div class="kpi-card accent-green">
+        <h3>Highest Market Value</h3>
+        <p id="kpiMarketValue">-</p>
+      </div>
+    </section>
+
+    <section class="dashboard-grid">
+      <div class="chart-card">
+        <h2>World Map of Teams</h2>
+        <div id="worldMap" class="chart"></div>
+        <p class="note">Countries in the dataset are highlighted and colored by continent.</p>
+      </div>
+
+      <div class="chart-card">
+        <h2>Top 10 Teams by Goals Scored in Last 4 Years</h2>
+        <div id="barChart" class="chart"></div>
+      </div>
+
+      <div class="chart-card">
+        <h2>Goals Scored vs Goals Received</h2>
+        <div id="comparisonChart" class="chart"></div>
+      </div>
+
+      <div class="chart-card">
+  <h2>Market Value vs Participations (Title-Winning Countries)</h2>
+  <div id="bubbleChart" class="chart"></div>
+  <p class="note">Only countries with at least one World Cup title are shown. Bubble size represents number of titles.</p>
+</div>
+    </section>
+
+    <section class="top-tables-grid">
+      <div class="chart-card">
+        <h2>Top 5 Most World Cup Titles</h2>
+        <div id="topTitlesTable" class="small-table-wrap"></div>
+      </div>
+
+      <div class="chart-card">
+        <h2>Top 5 Most World Cup Participations</h2>
+        <div id="topParticipationsTable" class="small-table-wrap"></div>
+      </div>
+
+      <div class="chart-card">
+        <h2>Top 5 Highest Squad Market Value</h2>
+        <div id="topMarketValueTable" class="small-table-wrap"></div>
+      </div>
+    </section>
+
+    <section class="dashboard-grid">
+      <div class="chart-card full-width">
+        <h2>Sortable Team Data Table</h2>
+        <div class="table-container">
+          <table id="dataTable">
+            <thead>
+              <tr>
+                <th data-key="team">Team</th>
+                <th data-key="continent">Continent</th>
+                <th data-key="is_host">Host</th>
+                <th data-key="goals_scored_last_4y">Goals Scored</th>
+                <th data-key="goals_received_last_4y">Goals Received</th>
+                <th data-key="wins_last_4y">Wins</th>
+                <th data-key="draws_last_4y">Draws</th>
+                <th data-key="losses_last_4y">Losses</th>
+                <th data-key="world_cup_titles_before">Titles</th>
+                <th data-key="world_cup_participations_before">Participations</th>
+                <th data-key="fifa_rank_pre_tournament">FIFA Rank</th>
+                <th data-key="squad_total_market_value_eur">Market Value (€)</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
         </div>
+      </div>
+    </section>
+  </div>
 
-        <div id="chart" class="chart"></div>
-      </section>
-    </main>
+  <div id="tooltip" class="tooltip"></div>
 
-    <footer class="container subtle">
-      <span id="status">Loading data…</span>
-    </footer>
-
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script src="script.js"></script>
-  </body>
+  <script src="script.js"></script>
+</body>
 </html>
